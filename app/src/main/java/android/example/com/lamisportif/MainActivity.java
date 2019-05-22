@@ -1,5 +1,6 @@
 package android.example.com.lamisportif;
 
+import android.example.com.lamisportif.fragments.BottomNavigationDrawerFragment;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -16,14 +17,14 @@ import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity {
     BottomAppBar mBottomAppBar;
-    FloatingActionButton mAddButton;
+    FloatingActionButton mButtonBasket;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mBottomAppBar = findViewById(R.id.bottomAppBar);
-        mAddButton = findViewById(R.id.add_post);
+        mButtonBasket = findViewById(R.id.add_post);
 
         mBottomAppBar.replaceMenu(R.menu.home_menu);
 
@@ -46,10 +47,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mAddButton.setOnClickListener(new View.OnClickListener() {
+        mButtonBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplication(),"add post button", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(),"My cart", Toast.LENGTH_SHORT).show();
+                BottomNavigationDrawerFragment f = new BottomNavigationDrawerFragment();
+                f.show(getSupportFragmentManager(),"TAG");
             }
         });
     }

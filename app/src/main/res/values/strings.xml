@@ -3,4 +3,8 @@
     <string name="search">search</string>
     <string name="deconnexion">Se déconnecter</string>
     <string name="LAmiSportif">L\' Ami Sportif</string>
+    <string name="food_delivery">Food Delivery</string>
+    <string name="bottom_sheet_name">hello</string>
+    <string name="bottom_sheet_email">email</string>
+    <string name="Ma_commande">Ma commande</string>
 </resources>
