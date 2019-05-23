@@ -8,4 +8,6 @@
     <string name="bottom_sheet_email">email</string>
     <string name="Ma_commande">Ma commande</string>
     <string name="search_hint">Recherche dans Restaurant...</string>
+    <string name="mes_commandes">Mes commandes</string>
+    <string name="profile">profile</string>
 </resources>

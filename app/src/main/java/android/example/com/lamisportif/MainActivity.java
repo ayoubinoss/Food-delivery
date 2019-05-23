@@ -3,6 +3,7 @@ package android.example.com.lamisportif;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.example.com.lamisportif.fragments.BottomMenuFragment;
 import android.example.com.lamisportif.fragments.BottomNavigationDrawerFragment;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.BottomNavigationView;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplication(),"My menu",Toast.LENGTH_SHORT).show();
+                BottomMenuFragment bottomMenuFragment = new BottomMenuFragment();
+                bottomMenuFragment.show(getSupportFragmentManager(),"");
             }
         });
 
