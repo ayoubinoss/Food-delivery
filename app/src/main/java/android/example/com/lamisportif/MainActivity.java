@@ -1,13 +1,10 @@
 package android.example.com.lamisportif;
 
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.example.com.lamisportif.fragments.BottomMenuFragment;
 import android.example.com.lamisportif.fragments.BottomNavigationDrawerFragment;
-import android.example.com.lamisportif.fragments.FilterFragment;
 import android.support.design.bottomappbar.BottomAppBar;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,9 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
-import android.widget.Toolbar;
-
-import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity {
     BottomAppBar mBottomAppBar;
@@ -41,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
                 switch(menuItem.getItemId()) {
                     case R.id.filter:
                         Toast.makeText(getApplication(),"my Filter", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplication(),FilterActivity.class));
                         break;
                 }
                 return true;

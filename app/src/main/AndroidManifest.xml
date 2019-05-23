@@ -8,7 +8,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
         <activity
             android:name=".MainActivity"
             android:icon="@drawable/ic_scooter"
@@ -27,15 +28,21 @@
         <activity
             android:name=".ProfileActivity"
             android:label="Profil"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".OrdersActivity"
             android:label="Mes commandes"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".OrderDetailsActivity"
             android:label="details"
-            android:parentActivityName=".OrdersActivity"/>
+            android:parentActivityName=".OrdersActivity" />
+        <activity
+            android:name=".FilterActivity"
+            android:label="Filter"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/FilterActivityTheme"
+            />
     </application>
 
 </manifest>
