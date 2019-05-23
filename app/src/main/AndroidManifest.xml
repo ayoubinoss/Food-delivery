@@ -11,17 +11,31 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/food_delivery"
-            android:icon="@drawable/ic_scooter">
+            android:icon="@drawable/ic_scooter"
+            android:label="@string/food_delivery">
             <meta-data
                 android:name="android.app.searchable"
                 android:value="@xml/searchable" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.SEARCH" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ProfileActivity"
+            android:label="Profil"
+            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".OrdersActivity"
+            android:label="Mes commandes"
+            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".OrderDetailsActivity"
+            android:label="details"
+            android:parentActivityName=".OrdersActivity"/>
     </application>
 
 </manifest>

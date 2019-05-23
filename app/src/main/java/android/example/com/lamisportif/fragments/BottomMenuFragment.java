@@ -1,5 +1,8 @@
 package android.example.com.lamisportif.fragments;
 
+import android.content.Intent;
+import android.example.com.lamisportif.OrdersActivity;
+import android.example.com.lamisportif.ProfileActivity;
 import android.example.com.lamisportif.R;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,9 +30,11 @@ public class BottomMenuFragment extends BottomSheetDialogFragment {
                 switch (menuItem.getItemId()) {
                     case R.id.commandes:
                         Toast.makeText(getActivity(),"commandes", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getContext(), OrdersActivity.class));
                         break;
                     case R.id.profile:
                         Toast.makeText(getActivity(),"profile", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getContext(), ProfileActivity.class));
                         break;
                     case R.id.deconnexion:
                         Toast.makeText(getActivity(),"deconnexion", Toast.LENGTH_SHORT).show();

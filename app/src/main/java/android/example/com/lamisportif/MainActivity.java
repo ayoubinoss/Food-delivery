@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.example.com.lamisportif.fragments.BottomMenuFragment;
 import android.example.com.lamisportif.fragments.BottomNavigationDrawerFragment;
+import android.example.com.lamisportif.fragments.FilterFragment;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
