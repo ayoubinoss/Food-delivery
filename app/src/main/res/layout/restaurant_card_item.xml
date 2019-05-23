@@ -1,7 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
-    android:id="@+id/restaurant_item"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    android:text="@string/app_name"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    android:layout_margin="10dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="10dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/ic_baseline_fastfood_24px"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/card_view_price"
+                android:textSize="18sp"
+                android:drawableStart="@drawable/ic_payment_black_24dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/card_view_text"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/card_view_time"
+                android:textSize="18sp"
+                android:drawableEnd="@drawable/ic_timer_black_24dp"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
