@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">L Ami Sportif</string>
+    <string name="app_name">Food Delivery</string>
     <string name="search">search</string>
     <string name="deconnexion">Se déconnecter</string>
     <string name="LAmiSportif">L\' Ami Sportif</string>
@@ -7,4 +7,5 @@
     <string name="bottom_sheet_name">hello</string>
     <string name="bottom_sheet_email">email</string>
     <string name="Ma_commande">Ma commande</string>
+    <string name="search_hint">Recherche dans Restaurant...</string>
 </resources>

@@ -11,10 +11,14 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/food_delivery">
+            android:label="@string/food_delivery"
+            android:icon="@drawable/ic_scooter">
+            <meta-data
+                android:name="android.app.searchable"
+                android:value="@xml/searchable" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.SEARCH" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
