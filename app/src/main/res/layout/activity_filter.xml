@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -42,7 +47,10 @@
         android:id="@+id/category_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="8dp"
         android:layout_below="@id/filter_toolbar"
         android:text="Category"
         android:textStyle="bold"
@@ -53,6 +61,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginBottom="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/category_label">
@@ -119,15 +128,127 @@
             />
     </android.support.design.chip.ChipGroup>
 
+    <TextView
+        android:id="@+id/max_price_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_below="@id/chips"
+        android:text="Max price"
+        android:textStyle="bold"
+        android:textColor="@color/colorTitleAppBar"
+        android:textSize="14sp"/>
+    <TextView
+        android:id="@+id/max_price_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_alignBottom="@id/max_price_label"
+        android:layout_alignParentRight="true"
+        android:text="200 MAD"
+
+        android:textColor="@color/colorTitleAppBar"
+        android:textSize="14sp"/>
     <SeekBar
         android:id="@+id/seek_bar"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/chips"
-        android:layout_marginTop="16dp"
+        android:layout_below="@+id/max_price_label"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
         android:max="200"
          />
 
+    <TextView
+        android:id="@+id/restaurants_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_below="@id/seek_bar"
+        android:text="Restaurants"
+        android:textStyle="bold"
+        android:textColor="@color/colorTitleAppBar"
+        android:textSize="14sp"/>
+    <android.support.design.chip.ChipGroup
+        android:id="@+id/chips_restaurants"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/restaurants_label">
+
+        <android.support.design.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/app_name"
+            />
+        <android.support.design.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/app_name"
+            />
+        <android.support.design.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/app_name"
+            />
+        <android.support.design.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/app_name"
+            />
+        <android.support.design.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/app_name"
+            />
+        <android.support.design.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/app_name"
+            />
+        <android.support.design.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/app_name"
+            />
+        <android.support.design.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/app_name"
+            />
+        <android.support.design.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/app_name"
+            />
+        <android.support.design.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/app_name"
+            />
+    </android.support.design.chip.ChipGroup>
 
 </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>

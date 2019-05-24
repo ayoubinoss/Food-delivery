@@ -48,4 +48,7 @@ dependencies {
 
     //Gson
     implementation 'com.google.code.gson:gson:2.8.5'
+
+    //step view
+    implementation 'com.kofigyan.stateprogressbar:stateprogressbar:1.0.0'
 }
