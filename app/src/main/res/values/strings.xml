@@ -20,4 +20,6 @@
     <string name="healthy">Healthy</string>
     <string name="indian">Indian</string>
     <string name="asian">Asian</string>
+    <string name="address_restaurant">Avenue Fal Ould Oumeir, Rabat</string>
+    <string name="phone_restaurant">05225-55555</string>
 </resources>
