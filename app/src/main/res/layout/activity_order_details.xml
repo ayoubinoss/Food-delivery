@@ -146,7 +146,8 @@
             android:id="@+id/list_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            tools:listitem ="@layout/plat_item_in_order_details">
 
         </android.support.v7.widget.RecyclerView>
 

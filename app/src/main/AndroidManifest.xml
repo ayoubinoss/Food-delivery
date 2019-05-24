@@ -27,7 +27,7 @@
         </activity>
         <activity
             android:name=".ProfileActivity"
-            android:label="Profil"
+            android:label="Profile"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".OrdersActivity"
