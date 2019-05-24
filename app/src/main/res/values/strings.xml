@@ -10,4 +10,14 @@
     <string name="search_hint">Recherche dans Restaurant...</string>
     <string name="mes_commandes">Mes commandes</string>
     <string name="profile">profile</string>
+    <string name="card_view_text">Pizza Hut</string>
+    <string name="card_view_price">10,00 DH</string>
+    <string name="card_view_time">20-25 min</string>
+    <string name="burger">Burger</string>
+    <string name="pizza">Pizza</string>
+    <string name="fast_food">Fast Food</string>
+    <string name="chicken">Chicken</string>
+    <string name="healthy">Healthy</string>
+    <string name="indian">Indian</string>
+    <string name="asian">Asian</string>
 </resources>
