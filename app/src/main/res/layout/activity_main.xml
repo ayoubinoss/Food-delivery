@@ -76,7 +76,8 @@
                 android:id="@+id/restaurants_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/restaurant_card_item"/>
+                tools:listitem="@layout/restaurant_card_item"
+                android:layout_marginBottom="72dp"/>
         </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
     <android.support.design.bottomappbar.BottomAppBar

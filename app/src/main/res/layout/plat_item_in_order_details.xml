@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:id="@+id/parent_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:id="@+id/container_details"
@@ -10,6 +13,7 @@
         android:orientation="horizontal"
         >
         <TextView
+            android:id="@+id/nb_meals"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" x4"
@@ -17,26 +21,34 @@
             android:textSize="16sp"
             android:layout_marginStart="4dp"
             android:layout_gravity="center_vertical"/>
-        <TextView
-            android:id="@+id/label_plat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
-            android:text=" Menu double Twister Normal, Pepsi, Frites normales"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textAlignment="center"
-            android:textSize="16sp"
-            android:textStyle="normal"
-            android:layout_weight="0.8"/>
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="200 MAD"
-            android:layout_gravity="center_vertical"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/designation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
+                android:text=" Menu Normaleseeeeeeeeeeeeeeed"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textStyle="normal"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/price"/>
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="200 MAD"
+                android:layout_gravity="center_vertical"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_weight="0.2"
+                android:gravity="center_vertical"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>
