@@ -4,26 +4,57 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.example.com.lamisportif.fragments.BottomMenuFragment;
 import android.example.com.lamisportif.fragments.BottomNavigationDrawerFragment;
+import android.example.com.lamisportif.helpful.RestaurantAdapter;
+import android.example.com.lamisportif.models.Restaurant;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import java.util.LinkedList;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "Main Activity";
+
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private RestaurantAdapter restaurantAdapter;
+
     BottomAppBar mBottomAppBar;
     FloatingActionButton mButtonBasket;
+    LinkedList<Restaurant> restaurants = new LinkedList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //RecyclerView & NestedScroll
+        recyclerView = findViewById(R.id.restaurants_list);
+        recyclerView.setHasFixedSize(true);
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        restaurantAdapter = new RestaurantAdapter(restaurants,this);
+        recyclerView.setAdapter(restaurantAdapter);
+
+        //Fill the list
+        for(int i = 0;i<5;i++){
+            restaurants.add(new Restaurant(
+                    "name_"+i,
+                    "price_"+i,
+                    "time_"+i
+            ));
+        }
+        // BottomAppBar
         mBottomAppBar = findViewById(R.id.bottomAppBar);
         mButtonBasket = findViewById(R.id.add_post);
 

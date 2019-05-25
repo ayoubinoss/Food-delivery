@@ -13,9 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:id="@+id/parent_layout_restaurants"
         >
 
         <ImageView
+            android:id="@+id/restaurant_image"
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:layout_marginBottom="5dp"
@@ -29,6 +31,7 @@
             android:gravity="center_horizontal"
             >
             <TextView
+                android:id="@+id/restaurant_delivery_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/card_view_price"
@@ -36,6 +39,7 @@
                 android:drawableStart="@drawable/ic_payment_black_24dp"
                 />
             <TextView
+                android:id="@+id/restaurant_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/card_view_text"
@@ -44,6 +48,7 @@
                 android:textStyle="bold"
                 android:textSize="18sp"/>
             <TextView
+                android:id="@+id/restaurant_delivery_time"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/card_view_time"
