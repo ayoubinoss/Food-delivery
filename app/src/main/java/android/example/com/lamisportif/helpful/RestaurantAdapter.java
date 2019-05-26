@@ -27,7 +27,7 @@ import java.util.LinkedList;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.MyViewHolder> {
     private LinkedList<Restaurant> myRestaurants;
-    private static final String TAG = "OrderDetailsAdapter";
+    private static final String TAG = "RestaurantAdapter";
     Context context;
 
     // Provide a suitable constructor (depends on the kind of dataset)
