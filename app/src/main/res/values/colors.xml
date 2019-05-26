@@ -9,6 +9,8 @@
     <color name="colorSecondaryDark">#0B05D1</color>
     <color name="colorTitleAppBar">#000000</color>
     <color name="colorChipUnselected">#ECECEC</color>
+    <color name="color_backgound">#FFFFFF</color>
+
     <color name="colorPrimaryLight">#F9E1B9</color>
     <color name="colorSoftBlack">#454545</color>
 

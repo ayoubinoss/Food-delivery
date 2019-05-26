@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
@@ -54,4 +55,5 @@ dependencies {
 
     //step view
     implementation 'com.kofigyan.stateprogressbar:stateprogressbar:1.0.0'
+
 }
