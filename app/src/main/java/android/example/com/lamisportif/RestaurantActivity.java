@@ -170,6 +170,7 @@ public class RestaurantActivity extends AppCompatActivity {
                                                          ));
                                                     Log.d(TAG, "Inside Loop : " +documentSnapshot.getId() + " => " + documentSnapshot.getData());
                                                 }
+                                                mealAdapter.notifyDataSetChanged();
                                             }
                                         }
                                     });

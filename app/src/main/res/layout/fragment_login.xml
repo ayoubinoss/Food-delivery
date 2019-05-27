@@ -62,9 +62,17 @@
                 />
         </android.support.design.widget.TextInputLayout>
         <!-- Snippet from "Add buttons" section goes here. -->
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
         <RelativeLayout
+            android:id="@+id/buttons_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="visible">
 
             <android.support.design.button.MaterialButton
                 android:id="@+id/next_button"
@@ -97,15 +105,5 @@
                 android:text="@string/register_here" />
 
         </RelativeLayout>
-        <android.support.design.button.MaterialButton
-            android:id="@+id/facebook_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:text="@string/facebook_registration"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            app:icon="@drawable/ic_facebook_letter_logo"
-            android:layout_below="@id/next_button"
-            android:textColor="@color/colorSecondary"/>
     </LinearLayout>
 </ScrollView>

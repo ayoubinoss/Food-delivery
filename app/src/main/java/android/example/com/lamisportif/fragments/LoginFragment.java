@@ -1,5 +1,6 @@
 package android.example.com.lamisportif.fragments;
 
+import android.app.MediaRouteButton;
 import android.content.Intent;
 
 import android.example.com.lamisportif.MainActivity;
@@ -18,6 +19,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 
 /**
  * Fragment representing the login screen for our application
@@ -38,6 +42,8 @@ public class LoginFragment extends Fragment {
     private MaterialButton mButtonRegister;
     private FirebaseAuth mAuth;
     private final static String TAG = "LoginFragment";
+    private ProgressBar mProgressBar;
+    private RelativeLayout mButtonsContainer;
 
     @Override
     public View onCreateView(
@@ -54,8 +60,8 @@ public class LoginFragment extends Fragment {
         mButtonAuth = view.findViewById(R.id.next_button);
         mButtonCancel = view.findViewById(R.id.cancel_button);
         mButtonRegister = view.findViewById(R.id.register_button);
-
-
+        mProgressBar = view.findViewById(R.id.progress_bar);
+        mButtonsContainer = view.findViewById(R.id.buttons_container);
 
         //button to go to the register fragment
         mButtonRegister.setOnClickListener(new View.OnClickListener() {
@@ -75,10 +81,15 @@ public class LoginFragment extends Fragment {
                 //check email
                 if(!isEmailValid(mEmail.getText())) {
                     mEmail.setError(getString(R.string.error_msg_email));
-                } else if(isPasswordValid(mPassword.getText())){
+                } else if(isPasswordValid(mPassword.getText()) && isEmailValid(mEmail.getText())){
 
                     mEmail.setError(null); //clear Error
                     mPassword.setError(null); //clear Error
+
+                    //display the progress bar
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    //hide the buttons
+                    mButtonsContainer.setVisibility(View.GONE);
 
                     mAuth.signInWithEmailAndPassword(String.valueOf(mEmail.getText()),
                             String.valueOf(mPassword.getText()))
@@ -89,13 +100,25 @@ public class LoginFragment extends Fragment {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "signInWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
-                                        updateUI(user);
+                                        //if the email is not validated don't let him in
+                                        if(!user.isEmailVerified()) {
+                                            updateUI(null);
+                                            mProgressBar.setVisibility(View.GONE);
+                                            mButtonsContainer.setVisibility(View.VISIBLE);
+                                            mAuth.signOut();
+                                        }
+
+                                        else
+                                            updateUI(user);
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.w(TAG, "signInWithEmail:failure", task.getException());
                                         Toast.makeText(getActivity(), "Authentication failed.",
                                                 Toast.LENGTH_SHORT).show();
                                         updateUI(null);
+                                        //show buttons Container and hide progress bar
+                                        mButtonsContainer.setVisibility(View.VISIBLE);
+                                        mProgressBar.setVisibility(View.GONE);
                                     }
 
                                 }
@@ -111,7 +134,6 @@ public class LoginFragment extends Fragment {
                 mPassword.setText("");
             }
         });
-
         return view;
     }
 
@@ -122,7 +144,6 @@ public class LoginFragment extends Fragment {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
-
     /**
      * check if user is already signed in else we display the login fragment
      * @param currentUser
@@ -154,5 +175,4 @@ public class LoginFragment extends Fragment {
     private boolean isPasswordValid(Editable text) {
         return !TextUtils.isEmpty(text);
     }
-
 }

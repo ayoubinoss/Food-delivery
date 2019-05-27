@@ -99,6 +99,8 @@ public class RegisterFragment extends Fragment {
                                         Log.d(TAG,"Register successful");
                                         Toast.makeText(getActivity(),"Registered successfully",Toast.LENGTH_LONG ).show();
                                         FirebaseUser user = mAuth.getCurrentUser();
+                                        if(user != null)
+                                            user.sendEmailVerification();
                                         updateUI(user);
                                     }
                                     else{
@@ -136,9 +138,10 @@ public class RegisterFragment extends Fragment {
     private void updateUI(FirebaseUser currentUser) {
         if (currentUser != null) {
             //the user is already authenticated we display the catalog
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            startActivity(intent);
-            getActivity().finish();
+            FirebaseAuth.getInstance().signOut();
+            ((NavigationHost)getActivity()).navigateTo(new LoginFragment(), true);
+            Toast.makeText(getContext(), "An email was sent to your newslettre check your " +
+                    "email letter to activate your account", Toast.LENGTH_LONG).show();
         }
     }
 

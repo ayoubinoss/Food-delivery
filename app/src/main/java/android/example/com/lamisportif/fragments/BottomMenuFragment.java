@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.example.com.lamisportif.OrdersActivity;
 import android.example.com.lamisportif.ProfileActivity;
 import android.example.com.lamisportif.R;
+import android.example.com.lamisportif.helpful.NavigationHost;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class BottomMenuFragment extends BottomSheetDialogFragment {
 
@@ -37,6 +40,8 @@ public class BottomMenuFragment extends BottomSheetDialogFragment {
                         startActivity(new Intent(getContext(), ProfileActivity.class));
                         break;
                     case R.id.deconnexion:
+                        FirebaseAuth.getInstance().signOut();
+                        ((NavigationHost)getActivity()).navigateTo(new LoginFragment(), true);
                         Toast.makeText(getActivity(),"deconnexion", Toast.LENGTH_SHORT).show();
                         break;
                 }
