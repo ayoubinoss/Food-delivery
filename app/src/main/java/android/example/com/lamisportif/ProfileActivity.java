@@ -6,15 +6,26 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    private TextView mName;
+    private TextView mPhone;
+    private TextView mEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        mEmail = findViewById(R.id.mail);
+        mPhone = findViewById(R.id.phone);
+        mName = findViewById(R.id.name);
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null)
@@ -40,5 +51,23 @@ public class ProfileActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getUserDetails();
+    }
+
+    /**
+     * get the current User details.
+     */
+    public void getUserDetails() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null) {
+            mEmail.setText(user.getEmail());
+            mPhone.setText(user.getPhoneNumber());
+            mName.setText(user.getDisplayName());
+        }
     }
 }

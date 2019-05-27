@@ -11,11 +11,13 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -32,7 +34,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.text.DecimalFormat;
 import java.util.LinkedList;
 
-public class RestaurantActivity extends AppCompatActivity {
+public class RestaurantActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = " Restaurant Activity ";
     private static final String LABEL_COLLECTION = "restaurants";
@@ -48,12 +50,16 @@ public class RestaurantActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private MealAdapter mealAdapter;
 
+    ImageView collapseBackBtn;
+    ImageView toolBarBackBtn;
+
     LinkedList<Meal> myMeals = new LinkedList<>();
     Restaurant restaurant = new Restaurant();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
+
 
         //View
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.restaurant_collapsingToolbar);
@@ -62,9 +68,11 @@ public class RestaurantActivity extends AppCompatActivity {
         TextView deliveryTimeField = (TextView) findViewById(R.id.delivery_time_field);
         TextView deliveryPriceField = (TextView) findViewById(R.id.delivery_price_field);
         ImageView restaurantImageField = (ImageView) findViewById(R.id.restaurant_image_field);
-        final ImageView collapseBackBtn = (ImageView) findViewById(R.id.collapse_back_btn); // Need OnClickListener
-        final ImageView toolBarBackBtn = (ImageView) findViewById(R.id.toolbar_back_btn); // need OnClickListener (same code as collapseBackBtn)
+        collapseBackBtn = (ImageView) findViewById(R.id.collapse_back_btn); // Need OnClickListener
+        toolBarBackBtn = (ImageView) findViewById(R.id.toolbar_back_btn); // need OnClickListener (same code as collapseBackBtn)
 
+        collapseBackBtn.setOnClickListener(this);
+        toolBarBackBtn.setOnClickListener(this);
         //intent & bundle
         Bundle bundle = getIntent().getBundleExtra("bundle");
         restaurant.setName(bundle.getString("name"));
@@ -182,5 +190,16 @@ public class RestaurantActivity extends AppCompatActivity {
                     }
                 });
     Log.d(TAG, " Meals :" + myMeals.toString());
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.collapse_back_btn:
+            case R.id.toolbar_back_btn:
+                finish();
+
+        }
     }
 }

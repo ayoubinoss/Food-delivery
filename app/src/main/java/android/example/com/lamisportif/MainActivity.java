@@ -126,8 +126,9 @@ public class MainActivity extends AppCompatActivity {
                                 Log.d(TAG,"Document inside : " + documentSnapshot.getId()+" => "+ documentSnapshot.getData());
                             }
                             Log.d(TAG, "All Documents :" + restaurants.toString());
+                            restaurantAdapter.notifyDataSetChanged();
                         }
-                        restaurantAdapter.notifyDataSetChanged();
+
                     }
                 });
     }
