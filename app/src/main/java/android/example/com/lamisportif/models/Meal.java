@@ -2,7 +2,7 @@ package android.example.com.lamisportif.models;
 
 public class Meal {
     private String image;
-    private String price;
+    private double price;
     private String description;
     private String designation;
     private String category;
@@ -11,7 +11,7 @@ public class Meal {
     public Meal() {
     }
 
-    public Meal(String image, String price, String description, String designation, String category) {
+    public Meal(String image, double price, String description, String designation, String category) {
         this.image = image;
         this.price = price;
         this.description = description;
@@ -19,13 +19,13 @@ public class Meal {
         this.category = category;
     }
 
-    public Meal(String price, String description, String designation) {
+    public Meal(double price, String description, String designation) {
         this.price = price;
         this.description = description;
         this.designation = designation;
     }
 
-    public Meal(String price, String description, String designation, String category) {
+    public Meal(double price, String description, String designation, String category) {
         this.price = price;
         this.description = description;
         this.designation = designation;
@@ -56,11 +56,11 @@ public class Meal {
         this.image = image;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -76,8 +76,10 @@ public class Meal {
     public String toString() {
         return "Meal{" +
                 "image='" + image + '\'' +
-                ", price='" + price + '\'' +
-                ", name='" + description + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", designation='" + designation + '\'' +
+                ", category='" + category + '\'' +
                 '}';
     }
 }

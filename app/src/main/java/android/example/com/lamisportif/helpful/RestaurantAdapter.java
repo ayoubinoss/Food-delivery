@@ -3,6 +3,7 @@ package android.example.com.lamisportif.helpful;
 import android.content.Context;
 import android.content.Intent;
 import android.example.com.lamisportif.R;
+import android.example.com.lamisportif.RestaurantActivity;
 import android.example.com.lamisportif.models.Restaurant;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -23,6 +24,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.MyViewHolder> {
@@ -53,18 +55,38 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.name.setText(myRestaurants.get(position).getName());
-        holder.deliveryPrice.setText(myRestaurants.get(position).getDeliveryPrice());
+        holder.deliveryPrice.setText(new DecimalFormat("#0.00").format(myRestaurants.get(position).getDeliveryPrice()).concat(" MAD"));
         holder.deliveryTime.setText(myRestaurants.get(position).getDeliveryTime());
-
         // Reference to an image file in Cloud Storage
-        /*StorageReference storageReference = FirebaseStorage.getInstance().getReference(myRestaurants.get(position).getImage());
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference(myRestaurants.get(position).getImage());
         // Download directly from StorageReference using Glide
         // (See MyAppGlideModule for Loader registration)
         GlideApp.with(context)
                 .load(storageReference)
-                .into(holder.image);*/
+                .into(holder.image);
 
-
+        //OnClickListener
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Click On : " + myRestaurants.get(position).getRestaurantID());
+                Intent intent  = new Intent(context,RestaurantActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("restaurantID",myRestaurants.get(position).getRestaurantID());
+                bundle.putString("image_link",myRestaurants.get(position).getImage());
+                bundle.putString("name",myRestaurants.get(position).getName());
+                bundle.putString("deliveryTime",myRestaurants.get(position).getDeliveryTime());
+                bundle.putDouble("deliveryPrice",myRestaurants.get(position).getDeliveryPrice());
+                //Encoding Image
+                Bitmap bitmap = ((BitmapDrawable)holder.image.getDrawable()).getBitmap();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                byte[] imageInByte = stream.toByteArray();
+                bundle.putByteArray("image",imageInByte);
+                intent.putExtra("bundle",bundle);
+                context.startActivity(intent);
+            }
+        });
 
     }
 

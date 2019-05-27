@@ -16,6 +16,12 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:value="@xml/searchable" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.SEARCH" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ProfileActivity"
@@ -36,17 +42,15 @@
             android:theme="@style/FilterActivityTheme" />
         <activity
             android:name=".RestaurantActivity"
-            android:theme="@style/FilterActivityTheme" />
+            android:theme="@style/FilterActivityTheme" >
+
+
+        </activity>
         <activity android:name=".FormActivity">
 
         </activity>
         <activity android:name=".FirstActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.SEARCH" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

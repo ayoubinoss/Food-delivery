@@ -6,6 +6,7 @@ import android.example.com.lamisportif.fragments.BottomMenuFragment;
 import android.example.com.lamisportif.fragments.BottomNavigationDrawerFragment;
 import android.example.com.lamisportif.helpful.RestaurantAdapter;
 import android.example.com.lamisportif.models.Restaurant;
+import android.support.annotation.NonNull;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,10 +23,21 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Main Activity";
+    private static final String LABEL_COLLECTION = "restaurants";
+    private static final String LABEL_DELIVERY_PRICE = "deliveryPrice";
+    private static final String LABEL_DELIVERY_TIME = "deliveryTime";
+    private static final String LABEL_IMAGE = "image";
+    private static final String LABEL_NAME  ="name";
 
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
@@ -47,13 +60,14 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(restaurantAdapter);
 
         //Fill the list
-        for(int i = 0;i<5;i++){
+        /*for(int i = 0;i<5;i++){
             restaurants.add(new Restaurant(
                     "name_"+i,
-                    "price_"+i,
+                    (double)i,
                     "time_"+i
             ));
-        }
+        }*/
+        getRestaurants();
         // BottomAppBar
         mBottomAppBar = findViewById(R.id.bottomAppBar);
         mButtonBasket = findViewById(R.id.add_post);
@@ -92,7 +106,31 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
+    public void getRestaurants(){
+        restaurants.clear();
+        final FirebaseFirestore db =FirebaseFirestore.getInstance();
+        db.collection(LABEL_COLLECTION)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                restaurants.add(new Restaurant(
+                                        (String)documentSnapshot.get(LABEL_NAME),
+                                        (String)documentSnapshot.get(LABEL_IMAGE),
+                                        ((Long)documentSnapshot.get(LABEL_DELIVERY_PRICE)).intValue(),
+                                        (String)documentSnapshot.get(LABEL_DELIVERY_TIME),
+                                        documentSnapshot.getId()
+                                ));
+                                Log.d(TAG,"Document inside : " + documentSnapshot.getId()+" => "+ documentSnapshot.getData());
+                            }
+                            Log.d(TAG, "All Documents :" + restaurants.toString());
+                        }
+                        restaurantAdapter.notifyDataSetChanged();
+                    }
+                });
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

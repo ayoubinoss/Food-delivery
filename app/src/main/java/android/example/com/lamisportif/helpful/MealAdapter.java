@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MyViewHolder> {
@@ -44,7 +45,8 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MyViewHolder> 
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.description.setText(myMeals.get(position).getDescription());
-        holder.price.setText(myMeals.get(position).getPrice());
+        holder.price.setText(new DecimalFormat("#0.00").format(myMeals.get(position).getPrice()).concat(" MAD"));
+
         holder.designation.setText(myMeals.get(position).getDesignation());
         if(oldCategory.equals(myMeals.get(position).getCategory())){
             holder.categoryLayout.setVisibility(View.GONE);
