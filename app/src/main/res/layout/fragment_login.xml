@@ -12,6 +12,7 @@
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="vertical"
+        android:layout_gravity="center_vertical"
         android:padding="24dp"
         android:paddingTop="16dp">
 
@@ -19,7 +20,7 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="32dp"
             android:layout_marginBottom="16dp"
             app:srcCompat="@drawable/ic_scooter"
             />

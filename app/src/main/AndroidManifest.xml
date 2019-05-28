@@ -44,7 +44,9 @@
         <activity android:name=".FormActivity">
 
         </activity>
-        <activity android:name=".FirstActivity">
+        <activity
+            android:name=".FirstActivity"
+            android:theme="@style/FilterActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.SEARCH" />
