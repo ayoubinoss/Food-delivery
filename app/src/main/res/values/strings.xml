@@ -41,5 +41,7 @@
     <string name="name_msg_error">name must be at least 4 characters</string>
     <string name="your_name">Your name</string>
     <string name="your_phone_number">Your phone number</string>
+    <string name="add_location">add location</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
