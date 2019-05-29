@@ -3,9 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/location"
+        android:title="@string/add_location"
+        android:icon="@drawable/ic_add_location_black"
+        app:showAsAction="ifRoom"
+        />
+    <item
         android:id="@+id/filter"
         android:title="@string/search"
         android:icon="@drawable/ic_slider"
         app:showAsAction="ifRoom"
         />
+
 </menu>

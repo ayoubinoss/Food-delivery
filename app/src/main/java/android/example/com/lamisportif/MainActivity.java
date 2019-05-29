@@ -82,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplication(),"my Filter", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplication(),FilterActivity.class));
                         break;
+                    case R.id.location:
+                        startActivity(new Intent(getApplication(), MapsActivity.class));
+                        break;
                 }
                 return true;
             }
