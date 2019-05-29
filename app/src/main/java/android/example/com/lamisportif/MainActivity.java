@@ -2,6 +2,7 @@ package android.example.com.lamisportif;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.example.com.lamisportif.fragments.AdressFragment;
 import android.example.com.lamisportif.fragments.BottomMenuFragment;
 import android.example.com.lamisportif.fragments.BottomNavigationDrawerFragment;
 import android.example.com.lamisportif.helpful.RestaurantAdapter;
@@ -9,6 +10,7 @@ import android.example.com.lamisportif.models.Restaurant;
 import android.support.annotation.NonNull;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -84,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.location:
                         startActivity(new Intent(getApplication(), MapsActivity.class));
+                        /*AdressFragment f = AdressFragment.newInstance("Choisissez une adresse");
+                        f.show(getSupportFragmentManager(),"fragment Adresse");*/
                         break;
                 }
                 return true;
