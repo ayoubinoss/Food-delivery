@@ -246,6 +246,11 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
         textView.setLayoutParams(params);
     }
 
+    /**
+     * function to create a form
+     * @param fields a map that contain the choices for a certain question. key : question => value :[choice 1, choice 2, choice 3...]
+     * @param keys the questions
+     */
     public void createForm(HashMap <String, LinkedList<String>> fields, LinkedList<String> keys) {
 
         for(int i = 0; i < fields.size(); i++) {

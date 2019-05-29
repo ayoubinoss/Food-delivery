@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
-        android:id="@+id/parent_layout"
+    android:id="@+id/parent_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -33,7 +33,19 @@
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:textAllCaps="true"
-                android:text="dslkjlskjdlksjdlksjdlksjdlkjs"/>
+                android:text="dslkjlskjdlksjdlksjdlksjdlkjs" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/longitude"
+                android:text="dddddddd"
+                android:visibility="gone"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/latitude"
+                android:text="seeeeeeeeeeeeeeee"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <View

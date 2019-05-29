@@ -1,8 +1,13 @@
 package android.example.com.lamisportif.fragments;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.example.com.lamisportif.MapsActivity;
 import android.example.com.lamisportif.R;
 import android.example.com.lamisportif.helpful.AddressAdapter;
 import android.example.com.lamisportif.helpful.MealAdapter;
+import android.example.com.lamisportif.models.Location;
 import android.example.com.lamisportif.models.Meal;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,20 +15,29 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import java.util.LinkedList;
+import com.google.gson.Gson;
 
-public class AdressFragment extends DialogFragment {
+import java.util.LinkedList;
+import java.util.Set;
+import java.util.TreeSet;
+
+public class AdressFragment extends DialogFragment implements View.OnClickListener {
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private AddressAdapter addressAdapter;
     private Button mAddButton;
 
-    LinkedList<String> myLocations = new LinkedList<>();
+    private static final String TAG = "AdressFragment";
+    private static final String SHARED_FILE = "locations";
+    private static final String FIELD = "my_locations";
+
+    LinkedList<Location> myLocations = new LinkedList<>();
 
     public AdressFragment() {
 
@@ -61,15 +75,33 @@ public class AdressFragment extends DialogFragment {
 
         //handle button event
         mAddButton = view.findViewById(R.id.button_add);
-        mAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //todo add location
-            }
-        });
+        mAddButton.setOnClickListener(this);
+    }
+    public void getAllLocations() {
+        myLocations.clear();
+        SharedPreferences sp = getActivity().getSharedPreferences(SHARED_FILE, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        Set<String> mySet = sp.getStringSet("my_locations", new TreeSet<String>());
+        for(String address: mySet) {
+            Location location = gson.fromJson(address, Location.class);
+            myLocations.add(location);
+        }
+    }
 
-        myLocations.add("Boulevard Mohammed VI, Casablanca 20250");
-        myLocations.add("Rue Sidi Oqba, Casablanca 20250");
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.button_add:
+                startActivity(new Intent(getContext(), MapsActivity.class));
+                break;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getAllLocations();
+        Log.d(TAG, "locations = " + myLocations.toString());
         addressAdapter.notifyDataSetChanged();
     }
 }

@@ -85,9 +85,9 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplication(),FilterActivity.class));
                         break;
                     case R.id.location:
-                        startActivity(new Intent(getApplication(), MapsActivity.class));
-                        /*AdressFragment f = AdressFragment.newInstance("Choisissez une adresse");
-                        f.show(getSupportFragmentManager(),"fragment Adresse");*/
+                        //startActivity(new Intent(getApplication(), MapsActivity.class));
+                        AdressFragment f = AdressFragment.newInstance("Choisissez une adresse");
+                        f.show(getSupportFragmentManager(),"fragment Adresse");
                         break;
                 }
                 return true;
