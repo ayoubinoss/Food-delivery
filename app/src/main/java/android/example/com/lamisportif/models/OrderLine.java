@@ -8,6 +8,8 @@ public class OrderLine {
     private double total;
     private String fields;
 
+    public OrderLine() {
+    }
 
     public OrderLine(String designation, int quantity, double price, double total) {
         this.designation = designation;

@@ -1,21 +1,28 @@
 package android.example.com.lamisportif;
 
+import android.example.com.lamisportif.models.Meal;
+import android.example.com.lamisportif.models.OrderLine;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.util.MapUtils;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class FormActivity extends AppCompatActivity {
+public class FormActivity extends AppCompatActivity implements View.OnClickListener {
 
     private LinearLayout mParentLayout;
     private LinkedList<LinearLayout> mCardViews = new LinkedList<>();
@@ -30,13 +37,71 @@ public class FormActivity extends AppCompatActivity {
     public final String FIELD = "field";
     public final String CHECKBOX = "checkbox";
 
-
+    Meal meal = new Meal();
+    OrderLine orderLine = new OrderLine();
+    TextView quantityView;
+    TextView designationView;
+    TextView totalView;
+    ImageView addIcon;
+    ImageView removeIcon;
+    ImageView closeIcon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
 
         mParentLayout = findViewById(R.id.parent_layout);
+
+        //View
+        quantityView = (TextView) findViewById(R.id.order_quantity);
+        designationView = (TextView) findViewById(R.id.label_plat_);
+        totalView = (TextView) findViewById(R.id.price_);
+        addIcon = (ImageView) findViewById(R.id.add);
+        removeIcon = (ImageView) findViewById(R.id.remove);
+        closeIcon = (ImageView) findViewById(R.id.close_btn);
+
+        // Intent & Bundle
+        Bundle bundle = getIntent().getBundleExtra("bundle");
+        meal.setCategoryID(bundle.getString("categoryID"));
+        meal.setMealID(bundle.getString("mealID"));
+        meal.setRestaurantID(bundle.getString("restaurantID"));
+        orderLine.setPrice(bundle.getDouble("price"));
+        orderLine.setDesignation(bundle.getString("designation"));
+        orderLine.setQuantity(1);
+
+        //Remove this code when the OnClick want to work
+        addIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(orderLine.getQuantity() < 10) {
+                    orderLine.setQuantity(orderLine.getQuantity() + 1);
+                    updateValues();
+                }
+            }
+        });
+        removeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(orderLine.getQuantity() > 1){
+                    orderLine.setQuantity(orderLine.getQuantity()-1);
+                    updateValues();
+                }
+                if(orderLine.getQuantity() == 1){
+                    finish();
+                }
+            }
+        });
+        closeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        //View's Data
+        designationView.setText(orderLine.getDesignation());
+       updateValues();
+
 
         for(int i = 0; i < 4; i++) {
             addCardView();
@@ -50,6 +115,32 @@ public class FormActivity extends AppCompatActivity {
 
         Log.d("id of the first card:", mCardViews.get(0).getId()+"");
 
+    }
+
+    /**
+     * Update the values of quantity & total values
+     */
+    public void updateValues(){
+        quantityView.setText(String.valueOf(orderLine.getQuantity()).concat("x"));
+        totalView.setText(String.valueOf(new DecimalFormat("#0.00").format(orderLine.getPrice() * orderLine.getQuantity())).concat(" MAD"));
+    }
+    @Override
+    public void onClick(View v) {
+        // Doesn't work idk why
+        /*
+        switch (v.getId()){
+            case R.id.remove :
+                Toast.makeText(this, "Add to cart", Toast.LENGTH_SHORT).show();
+                orderLine.setQuantity(orderLine.getQuantity()-1);
+                updateValues();
+                break;
+            case R.id.add :
+                Toast.makeText(this, "Add to cart", Toast.LENGTH_SHORT).show();
+                orderLine.setQuantity(orderLine.getQuantity()+1);
+                updateValues();
+                break;
+        }
+        */
     }
 
     /**

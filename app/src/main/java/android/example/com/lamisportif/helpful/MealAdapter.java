@@ -3,11 +3,13 @@ package android.example.com.lamisportif.helpful;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.example.com.lamisportif.FormActivity;
 import android.example.com.lamisportif.R;
 import android.example.com.lamisportif.fragments.PreCartFragment;
 import android.example.com.lamisportif.models.Meal;
 import android.example.com.lamisportif.models.OrderLine;
 import android.media.Image;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,11 +85,23 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MyViewHolder> 
             @Override
             public void onClick(View v) {
                 Log.d(TAG,"Add to Cart");
+                Intent intent = new Intent(context,FormActivity.class);
+                Bundle bundle =  new Bundle();
+                bundle.putString("restaurantID",myMeals.get(position).getRestaurantID());
+                bundle.putString("categoryID",myMeals.get(position).getCategoryID());
+                bundle.putString("mealID",myMeals.get(position).getMealID());
+                bundle.putString("designation",myMeals.get(position).getDesignation());
+                bundle.putDouble("price",myMeals.get(position).getPrice());
+                intent.putExtra("bundle",bundle);
+                context.startActivity(intent);
 
                 //Toast.makeText(context, "Add to cart", Toast.LENGTH_SHORT).show();
                 // this should be done on the Form but who is 'parentLayout' ?
-                LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+
+                /*LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View child = li.inflate(R.layout.pre_cart_card,null);
+
                 TextView orderQuantityView = (TextView) child.findViewById(R.id.order_quantity);
                 TextView labelMealView = (TextView) child.findViewById(R.id.label_plat_);
                 TextView labelAttributesView = (TextView) child.findViewById(R.id.label_attributes); // Fill it from the form, How ?
@@ -112,7 +126,9 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MyViewHolder> 
                         quantity++;
                     }
                 });
-                holder.parentLayout.addView(child);
+                holder.parentLayout.addView(child);*/
+
+
                 // Remove all this code, put in a fragment or activity, send data via Intent
                 // this is just for test atm /
                 /*SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_FILE,context.MODE_PRIVATE);

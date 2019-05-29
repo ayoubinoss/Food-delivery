@@ -6,9 +6,23 @@ public class Meal {
     private String description;
     private String designation;
     private String category;
+    private String restaurantID;
+    private String categoryID;
+    private String mealID;
 
 
     public Meal() {
+    }
+
+    public Meal(String image, double price, String description, String designation, String category, String restaurantID, String categoryID, String mealID) {
+        this.image = image;
+        this.price = price;
+        this.description = description;
+        this.designation = designation;
+        this.category = category;
+        this.restaurantID = restaurantID;
+        this.categoryID = categoryID;
+        this.mealID = mealID;
     }
 
     public Meal(String image, double price, String description, String designation, String category) {
@@ -30,6 +44,30 @@ public class Meal {
         this.description = description;
         this.designation = designation;
         this.category = category;
+    }
+
+    public String getRestaurantID() {
+        return restaurantID;
+    }
+
+    public void setRestaurantID(String restaurantID) {
+        this.restaurantID = restaurantID;
+    }
+
+    public String getCategoryID() {
+        return categoryID;
+    }
+
+    public void setCategoryID(String categoryID) {
+        this.categoryID = categoryID;
+    }
+
+    public String getMealID() {
+        return mealID;
+    }
+
+    public void setMealID(String mealID) {
+        this.mealID = mealID;
     }
 
     public String getDesignation() {

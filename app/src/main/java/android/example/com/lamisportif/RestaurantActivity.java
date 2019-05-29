@@ -98,20 +98,8 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
         recyclerView.setAdapter(mealAdapter);
 
         // fill the list
-        //getMeals();
         getAllMeals();
         mealAdapter.notifyDataSetChanged();
-        /*int j = 0;
-        for(int i = 0;i<15;i++){
-            myMeals.add(new Meal(
-                    (double)i,
-                    "description_"+i,
-                    "designation_"+i,
-                    "category_"+j
-            ));
-            if(i%5 == 0 && i!=0)
-                j++;
-        }*/
         // Changes when the the Toolbar is/is not collapsed
         final String restaurantName = restaurantNameField.getText().toString();
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -174,7 +162,10 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
                                                          ((Long)documentSnapshot.get(LABEL_PRICE)).intValue(),
                                                          (String) documentSnapshot.get(LABEL_DESCRIPTION),
                                                          (String) documentSnapshot.get(LABEL_DESIGNATION),
-                                                         (String) document.get(LABEL_CATEGORY)
+                                                         (String) document.get(LABEL_CATEGORY),
+                                                         (String) restaurant.getRestaurantID(),
+                                                         (String) document.getId(),
+                                                         (String) documentSnapshot.getId()
                                                          ));
                                                     Log.d(TAG, "Inside Loop : " +documentSnapshot.getId() + " => " + documentSnapshot.getData());
                                                 }

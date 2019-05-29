@@ -53,7 +53,12 @@
             android:theme="@style/FilterActivityTheme">
 
         </activity>
-        <activity android:name=".FormActivity"></activity>
+        <activity android:name=".FormActivity"
+            android:parentActivityName=".RestaurantActivity"
+            android:theme="@style/FilterActivityTheme"
+            >
+
+        </activity>
         <activity
             android:name=".FirstActivity"
             android:theme="@style/FilterActivityTheme">
