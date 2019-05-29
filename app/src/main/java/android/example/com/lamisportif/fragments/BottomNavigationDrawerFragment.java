@@ -61,7 +61,8 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment {
         parent.setFitsSystemWindows(true);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(parent);
         inflatedView.measure(0, 0);
-        DisplayMetrics displaymetrics = new DisplayMetrics();        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         int screenHeight = displaymetrics.heightPixels;
         bottomSheetBehavior.setPeekHeight(screenHeight);
 

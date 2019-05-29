@@ -13,5 +13,6 @@
 
     <color name="colorPrimaryLight">#F9E1B9</color>
     <color name="colorSoftBlack">#454545</color>
+    <color name="colorHrDark">#202020</color>
 
 </resources>

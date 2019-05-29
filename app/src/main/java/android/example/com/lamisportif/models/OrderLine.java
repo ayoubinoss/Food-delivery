@@ -16,6 +16,12 @@ public class OrderLine {
         this.total = total;
     }
 
+    public OrderLine(String designation, int quantity, double price) {
+        this.designation = designation;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
     public String getDesignation() {
         return designation;
     }

@@ -37,5 +37,11 @@
     <string name="category_text">Chicken Meals</string>
     <string name="meal_content">Un sandwich royal + deux strips de poulets + une pièce de pouelt + une salade coleslaw + un petit bol de riz + un jus d\'orange</string>
     <string name="meal_title">Ramadan Iftar Individuel</string>
+    <string name="order_quantity">4x</string>
+    <string name="order_total">200.00 MAD</string>
+    <string name="meal_attributes">Sauce Algérienne</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

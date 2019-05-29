@@ -68,8 +68,8 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
         TextView deliveryTimeField = (TextView) findViewById(R.id.delivery_time_field);
         TextView deliveryPriceField = (TextView) findViewById(R.id.delivery_price_field);
         ImageView restaurantImageField = (ImageView) findViewById(R.id.restaurant_image_field);
-        collapseBackBtn = (ImageView) findViewById(R.id.collapse_back_btn); // Need OnClickListener
-        toolBarBackBtn = (ImageView) findViewById(R.id.toolbar_back_btn); // need OnClickListener (same code as collapseBackBtn)
+        collapseBackBtn = (ImageView) findViewById(R.id.collapse_back_btn);
+        toolBarBackBtn = (ImageView) findViewById(R.id.toolbar_back_btn);
 
         collapseBackBtn.setOnClickListener(this);
         toolBarBackBtn.setOnClickListener(this);
@@ -182,9 +182,7 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
                                             }
                                         }
                                     });
-                                Log.d(TAG, "Meals 1 : " + myMeals.toString()); // Il s'affiche avant les Logs précédent for some reason,
-                                // en gros faut attendre Data tatsali, cuz Data kayna
-                                // check Log /
+                                Log.d(TAG, "Meals 1 : " + myMeals.toString());
                             }
                         }
                     }
