@@ -19,19 +19,31 @@ import java.util.LinkedList;
 
 public class OrderDetailsActivity extends AppCompatActivity {
 
-    String[] descriptionData = {"Pending", "Accepted", "Dispatched", "Delivered"};
-    TextView mItemDescription;
-    ImageView mDescriptionImg;
+    private String[] descriptionData = {"Pending", "Accepted", "Dispatched", "Delivered"};
+    private TextView mItemDescription;
+    private ImageView mDescriptionImg;
 
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private OrderLineOrderAdapter orderAdapter;
+
+    private ImageView mDeliveryManImage;
+    private TextView mDeliveryManName;
+    private TextView mDeliveryManPhone;
+
+    String id_order; // get this field from extras and use it to get the details todo
+    String myEmail; //get this field from FirebaseAuth todo
 
     LinkedList<OrderLine> orders = new LinkedList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
+
+        /*get the views here*/
+        mDeliveryManImage = findViewById(R.id.img_delivery_man);
+        mDeliveryManName = findViewById(R.id.delevery_man_name);
+        mDeliveryManPhone = findViewById(R.id.delivery_man_phone_number);
 
         StateProgressBar stateProgressBar = (StateProgressBar) findViewById(R.id.status);
         stateProgressBar.setStateDescriptionData(descriptionData);
@@ -51,33 +63,28 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     15,
                     40,
                     14.5));
-            orderAdapter.notifyDataSetChanged();
         }
         //refresh list
         orderAdapter.notifyDataSetChanged();
-        /*mItemDescription = (TextView) findViewById(R.id.item_description);
-        mDescriptionImg = (ImageView) findViewById(R.id.item_description_img);
-
-        mDescriptionImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                collapseExpandTextView();
-            }
-        });*/
     }
 
-    /*void collapseExpandTextView() {
-        if (mItemDescription.getVisibility() == View.GONE) {
-            // it's collapsed - expand it
-            mItemDescription.setVisibility(View.VISIBLE);
-            mDescriptionImg.setImageResource(R.drawable.ic_less_infos);
-        } else {
-            // it's expanded - collapse it
-            mItemDescription.setVisibility(View.GONE);
-            mDescriptionImg.setImageResource(R.drawable.ic_more_infos);
-        }
+    /**
+     * a function to get the Delivery man details
+     */
+    public void getDeliveryManDetails() {
+        //todo
+    }
+    /**
+     * a function to get the order status
+     */
+    public void getOrderStatus() {
+        //todo
+    }
 
-        ObjectAnimator animation = ObjectAnimator.ofInt(mItemDescription, "maxLines", mItemDescription.getMaxLines());
-        animation.setDuration(200).start();
-    }*/
+    /**
+     * a function to get the order details
+     */
+    public void getOrderDetails() {
+        //todo
+    }
 }

@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -59,7 +60,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Gson gson = new Gson();
                     String jsonAddress = gson.toJson(myLocation);
                     //get the set of addresses
-                    Set<String> mySet = sp.getStringSet("my_locations", new TreeSet<String>());
+                    Set<String> mySet = sp.getStringSet(FIELD, new HashSet<String>());
                     Log.d(TAG, "set before = " + mySet.toString());
 
                     mySet.add(jsonAddress);

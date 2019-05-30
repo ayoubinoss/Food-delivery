@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.example.com.lamisportif.MapsActivity;
+import android.example.com.lamisportif.OrderDetailsActivity;
 import android.example.com.lamisportif.R;
 import android.example.com.lamisportif.helpful.AddressAdapter;
 import android.example.com.lamisportif.helpful.MealAdapter;
@@ -23,6 +24,7 @@ import android.widget.Button;
 
 import com.google.gson.Gson;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeSet;
@@ -32,6 +34,7 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
     private LinearLayoutManager linearLayoutManager;
     private AddressAdapter addressAdapter;
     private Button mAddButton;
+    private Button mNextButton;
 
     private static final String TAG = "AdressFragment";
     private static final String SHARED_FILE = "locations";
@@ -73,15 +76,19 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
         addressAdapter = new AddressAdapter(myLocations,getContext());
         recyclerView.setAdapter(addressAdapter);
 
-        //handle button event
+        //handle buttons event
         mAddButton = view.findViewById(R.id.button_add);
         mAddButton.setOnClickListener(this);
+
+        mNextButton = view.findViewById(R.id.button_next);
+        mNextButton.setOnClickListener(this);
     }
     public void getAllLocations() {
         myLocations.clear();
         SharedPreferences sp = getActivity().getSharedPreferences(SHARED_FILE, Context.MODE_PRIVATE);
         Gson gson = new Gson();
-        Set<String> mySet = sp.getStringSet("my_locations", new TreeSet<String>());
+        Set<String> mySet = sp.getStringSet(FIELD, new HashSet<String>());
+        Log.d(TAG, "Set in fragment = " + mySet.toString());
         for(String address: mySet) {
             Location location = gson.fromJson(address, Location.class);
             myLocations.add(location);
@@ -94,6 +101,9 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
             case R.id.button_add:
                 startActivity(new Intent(getContext(), MapsActivity.class));
                 break;
+            case R.id.button_next:
+                dismiss();
+                startActivity(new Intent(getContext(), OrderDetailsActivity.class));
         }
     }
 
