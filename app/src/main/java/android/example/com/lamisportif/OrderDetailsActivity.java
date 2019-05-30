@@ -1,18 +1,28 @@
 package android.example.com.lamisportif;
 
 import android.animation.ObjectAnimator;
+import android.example.com.lamisportif.helpful.GlideApp;
 import android.example.com.lamisportif.helpful.OrderAdapter;
 import android.example.com.lamisportif.helpful.OrderLineOrderAdapter;
 import android.example.com.lamisportif.models.Order;
 import android.example.com.lamisportif.models.OrderLine;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firestore.v1.FirestoreGrpc;
 import com.kofigyan.stateprogressbar.StateProgressBar;
 
 import java.util.LinkedList;
@@ -31,6 +41,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private TextView mDeliveryManName;
     private TextView mDeliveryManPhone;
 
+    private final String TAG = "OrderDetailsActivity";
+
     String id_order; // get this field from extras and use it to get the details todo
     String myEmail; //get this field from FirebaseAuth todo
 
@@ -39,6 +51,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
+
+        myEmail = "larhlimi@gmail.com";//todo change it
+        id_order = "8v6Yir6xB8Fw8brJlAyB";//todo change it
 
         /*get the views here*/
         mDeliveryManImage = findViewById(R.id.img_delivery_man);
@@ -64,6 +79,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     40,
                     14.5));
         }
+        getDeliveryManDetails();
         //refresh list
         orderAdapter.notifyDataSetChanged();
     }
@@ -72,7 +88,37 @@ public class OrderDetailsActivity extends AppCompatActivity {
      * a function to get the Delivery man details
      */
     public void getDeliveryManDetails() {
-        //todo
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("orders").document(myEmail)
+                .collection("order_list").document(id_order).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if(task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if(document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        mDeliveryManName.setText(document.getString("delivery_man"));
+                        mDeliveryManPhone.setText(document.getString("delivery_man_phone"));
+                        StorageReference storageReference = FirebaseStorage
+                                .getInstance().getReference(document.getString("delivery_man_image"));
+                        // Download directly from StorageReference using Glide
+                        // (See MyAppGlideModule for Loader registration)
+
+                        GlideApp.with(getApplicationContext())
+                                .load(storageReference)
+                                .into(mDeliveryManImage);
+
+                        /*end*/
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
     }
     /**
      * a function to get the order status
