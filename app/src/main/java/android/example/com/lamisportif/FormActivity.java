@@ -16,8 +16,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.util.MapUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -36,6 +43,18 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
     public final String CARD = "card";
     public final String FIELD = "field";
     public final String CHECKBOX = "checkbox";
+
+
+    private static final String TAG = " Restaurant Activity ";
+    private static final String LABEL_COLLECTION = "restaurants";
+    private static final String LABEL_COLLECTION_1 = "categories";
+    private static final String LABEL_COLLECTION_2 = "meals";
+    private static final String LABEL_COLLECTION_3 = "questions";
+    private static final String LABEL_QUESTION = "question";
+    private static final String LABEL_CHOICES = "choices";
+
+    HashMap <String, LinkedList<String>> fields = new HashMap<>();
+    LinkedList<String> keys = new LinkedList<>();
 
     Meal meal = new Meal();
     OrderLine orderLine = new OrderLine();
@@ -60,6 +79,11 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
         removeIcon = (ImageView) findViewById(R.id.remove);
         closeIcon = (ImageView) findViewById(R.id.close_btn);
 
+        // Listeners
+        addIcon.setOnClickListener(this);
+        removeIcon.setOnClickListener(this);
+        closeIcon.setOnClickListener(this);
+
         // Intent & Bundle
         Bundle bundle = getIntent().getBundleExtra("bundle");
         meal.setCategoryID(bundle.getString("categoryID"));
@@ -69,51 +93,13 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
         orderLine.setDesignation(bundle.getString("designation"));
         orderLine.setQuantity(1);
 
-        //Remove this code when the OnClick want to work
-        addIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(orderLine.getQuantity() < 10) {
-                    orderLine.setQuantity(orderLine.getQuantity() + 1);
-                    updateValues();
-                }
-            }
-        });
-        removeIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(orderLine.getQuantity() > 1){
-                    orderLine.setQuantity(orderLine.getQuantity()-1);
-                    updateValues();
-                }
-                if(orderLine.getQuantity() == 1){
-                    finish();
-                }
-            }
-        });
-        closeIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
         //View's Data
         designationView.setText(orderLine.getDesignation());
        updateValues();
 
-
-        for(int i = 0; i < 4; i++) {
-            addCardView();
-            addTextView("field : " + i, mCardViews.get(i));
-            LinkedList<CheckBox> checkBoxes = new LinkedList<>();
-            for(int j = 0; j < 3; j++) {
-                checkBoxes.add(addCheckBox("check " + j, mCardViews.get(i)));
-            }
-            map.put("field : ", checkBoxes);
-        }
-
-        Log.d("id of the first card:", mCardViews.get(0).getId()+"");
+       //get Data
+        getFields(); // it does display the form as well
+        Log.d(TAG,"Inside on Create : "+fields + "questions : "+keys);
 
     }
 
@@ -126,21 +112,28 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
     }
     @Override
     public void onClick(View v) {
-        // Doesn't work idk why
-        /*
         switch (v.getId()){
-            case R.id.remove :
-                Toast.makeText(this, "Add to cart", Toast.LENGTH_SHORT).show();
-                orderLine.setQuantity(orderLine.getQuantity()-1);
-                updateValues();
-                break;
             case R.id.add :
-                Toast.makeText(this, "Add to cart", Toast.LENGTH_SHORT).show();
-                orderLine.setQuantity(orderLine.getQuantity()+1);
-                updateValues();
+                if(orderLine.getQuantity() < 10) {
+                    orderLine.setQuantity(orderLine.getQuantity() + 1);
+                    updateValues();
+                }
                 break;
+            case R.id.remove :
+                if(orderLine.getQuantity() > 1){
+                    orderLine.setQuantity(orderLine.getQuantity()-1);
+                    updateValues();
+                }
+                if(orderLine.getQuantity() == 1 ){
+                    finish();
+                }
+                break;
+            case R.id.close_btn :
+                finish();
+                break;
+
         }
-        */
+
     }
 
     /**
@@ -248,10 +241,10 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * function to create a form
-     * @param fields a map that contain the choices for a certain question. key : question => value :[choice 1, choice 2, choice 3...]
-     * @param keys the questions
+     *  @param fields : a map that contain the choices for a certain question. key : question => value :[choice 1, choice 2, choice 3...]
+     *  @param keys : the questions
      */
-    public void createForm(HashMap <String, LinkedList<String>> fields, LinkedList<String> keys) {
+    public void createForm( HashMap <String, LinkedList<String>> fields,LinkedList<String> keys) {
 
         for(int i = 0; i < fields.size(); i++) {
             addCardView();
@@ -265,6 +258,44 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
     }
     //todo form validation
     public void formValidation() {
+
+    }
+    public void getFields(){
+        keys.clear();
+        fields.clear();
+        FirebaseFirestore.getInstance()
+                .collection(LABEL_COLLECTION)
+                .document(meal.getRestaurantID())
+                .collection(LABEL_COLLECTION_1)
+                .document(meal.getCategoryID())
+                .collection(LABEL_COLLECTION_2)
+                .document(meal.getMealID())
+                .collection(LABEL_COLLECTION_3)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(QueryDocumentSnapshot document : task.getResult()){
+                                Log.d(TAG,"Data : " + document.getData());
+                                String question = (String) document.get(LABEL_QUESTION);
+                                ArrayList<String> choicesArray = new ArrayList<>();
+                                choicesArray = (ArrayList) document.get(LABEL_CHOICES);
+                                LinkedList<String> choicesList = new LinkedList<>();
+                                //parsing
+                                for(String val : choicesArray){
+                                    choicesList.add(val);
+                                }
+                                //add
+                                keys.add(question);
+                                fields.put(question,choicesList);
+                                Log.d(TAG,"here => " + fields);
+                            }
+                            createForm(fields,keys);
+                        }
+                    }
+                });
+
 
     }
 

@@ -134,6 +134,7 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void getAllMeals(){
+        myMeals.clear();
         FirebaseFirestore.getInstance().collection(LABEL_COLLECTION)
                 .document(restaurant.getRestaurantID())
                 .collection(LABEL_COLLECTION_1)
