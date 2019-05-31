@@ -21,26 +21,37 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.prefs.AbstractPreferences;
 
 public class AdressFragment extends DialogFragment implements View.OnClickListener {
-    private RecyclerView recyclerView;
-    private LinearLayoutManager linearLayoutManager;
-    private AddressAdapter addressAdapter;
+
     private Button mAddButton;
     private Button mNextButton;
 
+    private RadioGroup mRadioGroup;
     private static final String TAG = "AdressFragment";
     private static final String SHARED_FILE = "locations";
     private static final String FIELD = "my_locations";
 
     LinkedList<Location> myLocations = new LinkedList<>();
+    private Map<Integer,Location> mapButtons =  new HashMap<>();
+    LinkedList<RadioButton> mRadioButtons = new LinkedList<>();
+    private boolean mButtonChecked;
+
+    private int idRadioButton = 1000;
 
     public AdressFragment() {
 
@@ -68,21 +79,32 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
         String title = getArguments().getString("title", "Choose a location");
         getDialog().setTitle(title);
 
-        //recycler view configuration
-        recyclerView = view.findViewById(R.id.address_list);
-        recyclerView.setHasFixedSize(true);
-        linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        addressAdapter = new AddressAdapter(myLocations,getContext());
-        recyclerView.setAdapter(addressAdapter);
-
+        mRadioGroup = view.findViewById(R.id.radio_group);
+        mButtonChecked = false;
         //handle buttons event
         mAddButton = view.findViewById(R.id.button_add);
         mAddButton.setOnClickListener(this);
 
         mNextButton = view.findViewById(R.id.button_next);
         mNextButton.setOnClickListener(this);
+
+
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                mButtonChecked = true;
+                mNextButton.setEnabled(true);
+            }
+        });
+        getAllLocations();
+        for(Location location : myLocations) {
+            createRadioButtons(location);
+        }
     }
+
+    /**
+     * a function to get all location from a Shared file
+     */
     public void getAllLocations() {
         myLocations.clear();
         SharedPreferences sp = getActivity().getSharedPreferences(SHARED_FILE, Context.MODE_PRIVATE);
@@ -93,8 +115,39 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
             Location location = gson.fromJson(address, Location.class);
             myLocations.add(location);
         }
+
     }
 
+    /**
+     * create a radio button inside the mRadioGroup field
+     * @param location an address to select
+     */
+    private void createRadioButtons(Location location) {
+        RadioButton radioButton = new RadioButton(getContext());
+        radioButton.setText(location.getAddress());
+        radioButton.setTextSize(18);
+        mapButtons.put(idRadioButton,location);
+        radioButton.setId(idRadioButton++);
+        setRadioButtonAttribute(radioButton);
+        mRadioGroup.addView(radioButton);
+        mRadioButtons.add(radioButton);
+    }
+
+    /**
+     * set parameter for the radioButton created
+     * @param radioButton a radio button to set it's attributes
+     */
+    private void setRadioButtonAttribute(RadioButton radioButton) {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        radioButton.setLayoutParams(params);
+    }
+
+    /**
+     * an ovveride methode to handle click events
+     * @param v the view clicked
+     */
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
@@ -102,8 +155,16 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
                 startActivity(new Intent(getContext(), MapsActivity.class));
                 break;
             case R.id.button_next:
-                dismiss();
-                startActivity(new Intent(getContext(), OrderDetailsActivity.class));
+                if(isFormValid()) {
+                    //todo store the value of Location value to a shared preferences
+                    mNextButton.setEnabled(true);
+                    Log.d(TAG, "location is here here = " + mapButtons.get(getAnswerId()).getAddress());
+                    //todo pass the data to the next activity/fragment
+                    startActivity(new Intent(getContext(), OrderDetailsActivity.class));
+                } else {
+                    Toast.makeText(getContext()," you should select an address",Toast.LENGTH_SHORT).show();
+                }
+
         }
     }
 
@@ -111,7 +172,25 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
     public void onResume() {
         super.onResume();
         getAllLocations();
+        updateRadioButtons();
+        mNextButton.setEnabled(false);
         Log.d(TAG, "locations = " + myLocations.toString());
-        addressAdapter.notifyDataSetChanged();
+    }
+
+    private void updateRadioButtons() {
+
+    }
+
+    public boolean isFormValid() {
+        return mButtonChecked;
+    }
+
+    public int getAnswerId() {
+        for(RadioButton r : mRadioButtons) {
+            if(r.isChecked()) {
+                return r.getId();
+            }
+        }
+        return 0;
     }
 }

@@ -61,12 +61,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     String jsonAddress = gson.toJson(myLocation);
                     //get the set of addresses
                     Set<String> mySet = sp.getStringSet(FIELD, new HashSet<String>());
+                    Set<String> newSet = new TreeSet<>(mySet);
+
                     Log.d(TAG, "set before = " + mySet.toString());
 
-                    mySet.add(jsonAddress);
+                    newSet.add(jsonAddress);
 
                     Log.d(TAG, "set after = " + mySet.toString());
-                    editor.putStringSet("my_locations",mySet);
+                    editor.putStringSet("my_locations",newSet);
 
                     editor.apply();
                     Log.d(TAG, "mySet" + mySet.toString());
