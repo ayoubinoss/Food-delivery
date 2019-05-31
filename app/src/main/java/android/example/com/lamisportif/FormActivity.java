@@ -1,5 +1,6 @@
 package android.example.com.lamisportif;
 
+import android.content.SharedPreferences;
 import android.example.com.lamisportif.models.Meal;
 import android.example.com.lamisportif.models.OrderLine;
 import android.media.Image;
@@ -24,6 +25,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 import com.google.rpc.Help;
 
 import java.text.DecimalFormat;
@@ -32,6 +34,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class FormActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -39,6 +43,9 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
     private LinkedList<LinearLayout> mCardViews = new LinkedList<>();
     private LinkedList<TextView> mFields = new LinkedList<>();
     private Map<String, LinkedList<CheckBox>> map = new HashMap<>();
+
+    private static final String SHARED_FILE = "LAmiSportif.cart";
+
     /**
      * String : Question
      * RadioGroup : RadioGroup concerned
@@ -123,6 +130,7 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
         meal.setCategoryID(bundle.getString("categoryID"));
         meal.setMealID(bundle.getString("mealID"));
         meal.setRestaurantID(bundle.getString("restaurantID"));
+        meal.setImage(bundle.getString("imageRestaurant"));
         orderLine.setPrice(bundle.getDouble("price"));
         orderLine.setDesignation(bundle.getString("designation"));
         orderLine.setQuantity(1);
@@ -222,9 +230,24 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
                 getAnswers();
                 orderLine.setTotal(orderLine.getPrice() * orderLine.getQuantity());
                 orderLine.setMapAnswer(mapAnswer);
+                SharedPreferences sp = getSharedPreferences(SHARED_FILE,MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                Set<String> myOrderLines = sp.getStringSet("orderlines", new TreeSet<String>());
+                Set<String> newOrderLines = new TreeSet<>();
+                if(myOrderLines != null){
+                    for(String node : myOrderLines){
+                        newOrderLines.add(node);
+                    }
+                }
+                Gson gson = new Gson();
+                String json  = gson.toJson(orderLine);
+                newOrderLines.add(json);
+                editor.putStringSet("orderlines",newOrderLines);
+                editor.apply();
+                Log.d(TAG, " Json format : " + json);
                 Log.d(TAG,"orderLine :" + orderLine.toString());
+                finish();
                 break;
-
         }
 
     }

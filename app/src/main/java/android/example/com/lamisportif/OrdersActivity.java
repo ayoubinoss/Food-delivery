@@ -56,6 +56,7 @@ public class OrdersActivity extends AppCompatActivity {
     /**
      * get all orders
      */
+    //todo getImageByIdRestaurant()
     public void getAllOrders() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("orders").document(myEmail)

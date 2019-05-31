@@ -1,7 +1,9 @@
 package android.example.com.lamisportif.fragments;
 
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.example.com.lamisportif.R;
+import android.example.com.lamisportif.models.OrderLine;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,13 +11,26 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.rpc.Help;
+
+import java.util.LinkedList;
+import java.util.Set;
+import java.util.TreeSet;
+
 public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment {
+
+    LinkedList<OrderLine> mOrderLine = new LinkedList<>();
+    private static final String SHARED_FILE = "LAmiSportif.cart";
+    private static final String TAG = "Cart Fragment";
+
 
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
         @Override
@@ -79,7 +94,20 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 //Toast.makeText(getActivity(),"close fragment", Toast.LENGTH_SHORT).show();
                 dismiss();
+
             }
         });
+
+        getOrderLines();
+        Log.d(TAG, "heeere " +mOrderLine);
+    }
+    public void getOrderLines(){
+        SharedPreferences sp = getContext().getSharedPreferences(SHARED_FILE,getContext().MODE_PRIVATE);
+        OrderLine orderLine = new OrderLine();
+        Set<String> myOrderLines = sp.getStringSet("orderlines", new TreeSet<String>());
+        Gson gson = new Gson();
+        for(String key : myOrderLines){
+            mOrderLine.add(gson.fromJson(key,OrderLine.class));
+        }
     }
 }
