@@ -52,7 +52,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
 
-        myEmail = "larhlimi@gmail.com";//todo change it
+        myEmail = "larhlimihamza@gmail.com";//todo change it
         id_order = "8v6Yir6xB8Fw8brJlAyB";//todo change it
 
         /*get the views here*/
@@ -97,6 +97,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
                 if(task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
+                    Log.d(TAG,"here :" + document.getData());
                     if(document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         mDeliveryManName.setText(document.getString("delivery_man"));

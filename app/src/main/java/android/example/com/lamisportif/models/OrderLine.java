@@ -1,12 +1,14 @@
 package android.example.com.lamisportif.models;
 
+import java.util.Map;
+
 public class OrderLine {
 
     private String designation;
     private int quantity;
     private double price;
     private double total;
-    private String fields;
+    private Map<String,String> mapAnswer;
 
     public OrderLine() {
     }
@@ -22,6 +24,14 @@ public class OrderLine {
         this.designation = designation;
         this.quantity = quantity;
         this.price = price;
+    }
+
+    public Map<String, String> getMapAnswer() {
+        return mapAnswer;
+    }
+
+    public void setMapAnswer(Map<String, String> mapAnswer) {
+        this.mapAnswer = mapAnswer;
     }
 
     public String getDesignation() {
@@ -56,11 +66,14 @@ public class OrderLine {
         this.total = total;
     }
 
-    public String getFields() {
-        return fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
+    @Override
+    public String toString() {
+        return "OrderLine{" +
+                "designation='" + designation + '\'' +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                ", total=" + total +
+                ", mapAnswer=" + mapAnswer +
+                '}';
     }
 }
