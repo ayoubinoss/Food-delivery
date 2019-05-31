@@ -7,6 +7,7 @@ import android.example.com.lamisportif.helpful.OrderLineOrderAdapter;
 import android.example.com.lamisportif.models.Order;
 import android.example.com.lamisportif.models.OrderLine;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,14 +19,21 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firestore.v1.FirestoreGrpc;
 import com.kofigyan.stateprogressbar.StateProgressBar;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class OrderDetailsActivity extends AppCompatActivity {
 
@@ -41,6 +49,14 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private TextView mDeliveryManName;
     private TextView mDeliveryManPhone;
 
+    private StateProgressBar mStateProgressBar;
+    private Map<String, StateProgressBar.StateNumber> mMapStatus = new HashMap<>();
+    private Map<Integer, String> mMapStatusInversed = new HashMap<>();
+
+    private TextView mTotal;
+    private TextView mMealTotal;
+    private TextView mDeliveryPrice;
+
     private final String TAG = "OrderDetailsActivity";
 
     String id_order; // get this field from extras and use it to get the details todo
@@ -55,13 +71,27 @@ public class OrderDetailsActivity extends AppCompatActivity {
         myEmail = "larhlimihamza@gmail.com";//todo change it
         id_order = "8v6Yir6xB8Fw8brJlAyB";//todo change it
 
+        mMapStatus.put("pending",StateProgressBar.StateNumber.ONE);
+        mMapStatus.put("accepted",StateProgressBar.StateNumber.TWO);
+        mMapStatus.put("dispatched",StateProgressBar.StateNumber.THREE);
+        mMapStatus.put("delivered",StateProgressBar.StateNumber.FOUR);
+
+        mMapStatusInversed.put(1, "pending");
+        mMapStatusInversed.put(2, "accepted");
+        mMapStatusInversed.put(3, "dispatched");
+        mMapStatusInversed.put(4, "delivered");
+
         /*get the views here*/
         mDeliveryManImage = findViewById(R.id.img_delivery_man);
         mDeliveryManName = findViewById(R.id.delevery_man_name);
         mDeliveryManPhone = findViewById(R.id.delivery_man_phone_number);
+        mStateProgressBar = findViewById(R.id.status);
+        mTotal = findViewById(R.id.total);
+        mDeliveryPrice = findViewById(R.id.total_delivery);
+        mMealTotal = findViewById(R.id.total_meals);
 
-        StateProgressBar stateProgressBar = (StateProgressBar) findViewById(R.id.status);
-        stateProgressBar.setStateDescriptionData(descriptionData);
+
+        mStateProgressBar.setStateDescriptionData(descriptionData);
 
 
         //RecyclerView & NestedScroll
@@ -73,13 +103,15 @@ public class OrderDetailsActivity extends AppCompatActivity {
         recyclerView.setAdapter(orderAdapter);
 
         //Fill the list
-        for(int i = 0;i<5;i++){
+        /*for(int i = 0;i<5;i++){
             orders.add(new OrderLine("RES Name bla bla bla bla bla bla bla bla bla",
                     15,
                     40,
                     14.5));
-        }
+        }*/
         getDeliveryManDetails();
+        getOrderStatus();
+        getOrderDetails();
         //refresh list
         orderAdapter.notifyDataSetChanged();
     }
@@ -125,13 +157,75 @@ public class OrderDetailsActivity extends AppCompatActivity {
      * a function to get the order status
      */
     public void getOrderStatus() {
-        //todo
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("orders").document(myEmail)
+                .collection("order_list").document(id_order).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                        if(task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if(document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                mStateProgressBar.setCurrentStateNumber(mMapStatus.get(document.getString("status")));
+                                mDeliveryPrice.setText(String.valueOf(document.getLong("total_delivery")).concat(" MAD"));
+                                mTotal.setText(document.getString("total").concat(" MAD"));
+                                mMealTotal.setText(document.getString("total_meals").concat(" MAD"));
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+        DocumentReference docRef = db.collection("orders").document(myEmail)
+                .collection("order_list").document(id_order);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                // see which fields changed
+                Log.d(TAG, "status changed to = " + snapshot.getString("status"));
+                Log.d(TAG, "value of current state number " + mStateProgressBar.getCurrentStateNumber());
+                Log.d(TAG, "value of mMapInversed = " + mMapStatusInversed.get(mStateProgressBar.getCurrentStateNumber()));
+
+                if(!mMapStatusInversed.get(mStateProgressBar.getCurrentStateNumber()).equals(snapshot.getString("status"))) {
+                    Log.d(TAG, "status changed");
+                    mStateProgressBar.setCurrentStateNumber(mMapStatus.get(snapshot.getString("status")));
+                } else {
+                    Log.d(TAG,"status was not changed");
+                }
+
+            }
+        });
     }
 
     /**
      * a function to get the order details
      */
     public void getOrderDetails() {
-        //todo
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("orders").document(myEmail)
+                .collection("order_list").document(id_order)
+                .collection("order_lines")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                orders.add(new OrderLine(document.getString("designation"),
+                                        ((Long)document.getLong("quantity")).intValue(),
+                                        Double.valueOf((String)document.get("price"))));
+                                Log.d(TAG,"orders = " + orders.toString());
+                            }
+                            orderAdapter.notifyDataSetChanged();
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
     }
 }

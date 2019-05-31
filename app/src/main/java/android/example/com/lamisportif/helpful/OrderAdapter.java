@@ -61,13 +61,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                                                 format(myOrders.get(position).getTotal()));
 
         /*set image*/
-        /*StorageReference sr = FirebaseStorage.
-                            getInstance().getReference(myOrders.get(position).getLogoRestaurant());*/
+        StorageReference sr = FirebaseStorage.
+                            getInstance().getReference(myOrders.get(position).getLogoRestaurant());
         // Download directly from StorageReference using Glide
         // (See MyAppGlideModule for Loader registration)
 
         GlideApp.with(context )
-                .load(myOrders.get(position).getLogoRestaurant())
+                .load(sr)
                 .into(holder.logoRestaurant);
 
         /*end*/

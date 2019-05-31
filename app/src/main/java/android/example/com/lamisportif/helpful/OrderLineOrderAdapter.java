@@ -59,7 +59,7 @@ public class OrderLineOrderAdapter extends RecyclerView.Adapter<OrderLineOrderAd
         holder.designation.setText(myOrdersLines.get(position).getDesignation());
         holder.nb_meals.setText("x " + String.valueOf(myOrdersLines.get(position).getQuantity()));
         holder.total.setText(new DecimalFormat("#0").
-                format(myOrdersLines.get(position).getTotal()).concat(" MAD"));
+                format(myOrdersLines.get(position).getPrice()).concat(" MAD"));
 
 
     }
