@@ -1,11 +1,14 @@
 package android.example.com.lamisportif;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.example.com.lamisportif.fragments.ConfirmFragment;
 import android.example.com.lamisportif.models.Meal;
 import android.example.com.lamisportif.models.OrderLine;
 import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -92,6 +95,8 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
     HashMap <String, LinkedList<String>> fields = new HashMap<>();
     LinkedList<String> keys = new LinkedList<>();
 
+    String mRestaurant = " ";
+
     Meal meal = new Meal();
     OrderLine orderLine = new OrderLine();
     TextView quantityView;
@@ -127,6 +132,7 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
 
         // Intent & Bundle
         Bundle bundle = getIntent().getBundleExtra("bundle");
+        mRestaurant = bundle.getString("restaurantName");
         meal.setCategoryID(bundle.getString("categoryID"));
         meal.setMealID(bundle.getString("mealID"));
         meal.setRestaurantID(bundle.getString("restaurantID"));
@@ -224,6 +230,7 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.close_btn :
+
                 finish();
                 break;
             case R.id.confirm_fields :
@@ -232,21 +239,37 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
                 orderLine.setMapAnswer(mapAnswer);
                 SharedPreferences sp = getSharedPreferences(SHARED_FILE,MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
-                Set<String> myOrderLines = sp.getStringSet("orderlines", new TreeSet<String>());
-                Set<String> newOrderLines = new TreeSet<>();
-                if(myOrderLines != null){
-                    for(String node : myOrderLines){
-                        newOrderLines.add(node);
-                    }
+                String oldRestaurantName = null;
+                oldRestaurantName = sp.getString("restaurantName", oldRestaurantName);
+
+                Log.d(TAG,"old :" + oldRestaurantName);
+                if(oldRestaurantName != null && !mRestaurant.equals(oldRestaurantName)){
+                    ConfirmFragment confirmFragment = new ConfirmFragment();
+                    confirmFragment.show(getSupportFragmentManager(),TAG);
+                    //
+                    // Bundle : newRestaurantName ( add it to the sharedPreferences if confirmed
+                    // /
                 }
-                Gson gson = new Gson();
-                String json  = gson.toJson(orderLine);
-                newOrderLines.add(json);
-                editor.putStringSet("orderlines",newOrderLines);
-                editor.apply();
-                Log.d(TAG, " Json format : " + json);
-                Log.d(TAG,"orderLine :" + orderLine.toString());
-                finish();
+
+                else{
+                    Set<String> myOrderLines = sp.getStringSet("orderlines", new TreeSet<String>());
+                    Set<String> newOrderLines = new TreeSet<>();
+                    if(myOrderLines != null){
+                        for(String node : myOrderLines){
+                            newOrderLines.add(node);
+                        }
+                    }
+                    Gson gson = new Gson();
+                    String json  = gson.toJson(orderLine);
+                    newOrderLines.add(json);
+                    editor.putString("restaurantName",mRestaurant);
+                    editor.putStringSet("orderlines",newOrderLines);
+                    editor.apply();
+                    Log.d(TAG, " Json format : " + json);
+                    Log.d(TAG,"orderLine :" + orderLine.toString());
+                    finish();
+                }
+
                 break;
         }
 

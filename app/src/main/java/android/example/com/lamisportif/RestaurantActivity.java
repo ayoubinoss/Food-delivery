@@ -1,5 +1,7 @@
 package android.example.com.lamisportif;
 
+import android.content.SharedPreferences;
+import android.example.com.lamisportif.fragments.BottomNavigationDrawerFragment;
 import android.example.com.lamisportif.helpful.MealAdapter;
 import android.example.com.lamisportif.helpful.RestaurantAdapter;
 import android.example.com.lamisportif.models.Meal;
@@ -46,12 +48,16 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
     private static final String LABEL_IMAGE = "image";
     private static final String LABEL_PRICE = "price";
 
+    private static final String SHARED_FILE = "LAmiSportif.cart";
+
+
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private MealAdapter mealAdapter;
 
     ImageView collapseBackBtn;
     ImageView toolBarBackBtn;
+    ImageView confirmOrder;
 
     LinkedList<Meal> myMeals = new LinkedList<>();
     Restaurant restaurant = new Restaurant();
@@ -70,7 +76,9 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
         ImageView restaurantImageField = (ImageView) findViewById(R.id.restaurant_image_field);
         collapseBackBtn = (ImageView) findViewById(R.id.collapse_back_btn);
         toolBarBackBtn = (ImageView) findViewById(R.id.toolbar_back_btn);
+        confirmOrder = (ImageView) findViewById(R.id.confirm_fields);
 
+        confirmOrder.setOnClickListener(this);
         collapseBackBtn.setOnClickListener(this);
         toolBarBackBtn.setOnClickListener(this);
         //intent & bundle
@@ -94,7 +102,7 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        mealAdapter = new MealAdapter(myMeals,this);
+        mealAdapter = new MealAdapter(myMeals,this,restaurant.getName());
         recyclerView.setAdapter(mealAdapter);
 
         // fill the list
@@ -189,6 +197,10 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
             case R.id.collapse_back_btn:
             case R.id.toolbar_back_btn:
                 finish();
+                break;
+            case R.id.confirm_fields:
+                BottomNavigationDrawerFragment f = new BottomNavigationDrawerFragment();
+                f.show(getSupportFragmentManager(),"TAG");
 
         }
     }

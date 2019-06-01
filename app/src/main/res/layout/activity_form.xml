@@ -134,6 +134,5 @@
         app:fabSize="normal"
         android:layout_marginBottom="20dp"
         android:layout_gravity="bottom|center_horizontal"
-
          />
 </android.support.design.widget.CoordinatorLayout>

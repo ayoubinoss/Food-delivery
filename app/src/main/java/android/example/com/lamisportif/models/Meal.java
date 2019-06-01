@@ -120,4 +120,6 @@ public class Meal {
                 ", category='" + category + '\'' +
                 '}';
     }
+
+
 }

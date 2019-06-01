@@ -39,6 +39,9 @@ public class Order {
         this.content = content;
     }
 
+    public Order() {
+    }
+
     public Order(String restaurantID, String status, String logoRestaurant,
                  double total, String content) {
         this.restaurantID = restaurantID;

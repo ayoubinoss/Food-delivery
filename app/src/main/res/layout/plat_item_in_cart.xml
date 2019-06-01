@@ -1,64 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <LinearLayout
-        android:id="@+id/container_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" x4"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_marginStart="4dp"
-            android:layout_gravity="center_vertical"/>
-        <TextView
-            android:id="@+id/label_plat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
-            android:text=" Menu double Twister Normal, Pepsi, Frites normales"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textAlignment="center"
-            android:textSize="16sp"
-            android:textStyle="normal"
-            android:layout_weight="0.8"/>
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="200 MAD"
-            android:layout_gravity="center_vertical"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
-    </LinearLayout>
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_meal_item"
+    >
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/container_details"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp">
-        <ImageView
-            android:id="@+id/remove"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/pre_cart_card"
+        android:visibility="visible">
+        <RelativeLayout
+            android:id="@+id/container_details_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_remove_circle_outline_red"
-            android:layout_alignParentStart="true"
-            />
-        <ImageView
-            android:id="@+id/add"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/order_quantity"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_alignParentStart="true"
+                android:textColor="@color/colorSoftBlack"
+                android:id="@+id/order_quantity"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="40dp"
+                >
+                <TextView
+                    android:id="@+id/label_plat_"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/meal_title"
+                    android:textAlignment="center"
+                    android:maxWidth="180dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorSoftBlack"
+                    />
+                <TextView
+                    android:id="@+id/label_attributes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/meal_attributes"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    android:maxWidth="160dp"
+                    android:textStyle="italic"
+                    android:textColor="@color/colorSoftBlack"
+                    />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/price_"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/order_total"
+                android:textSize="17sp"
+                android:textColor="@color/colorSoftBlack"
+                android:textStyle="bold"
+                android:layout_alignParentEnd="true"
+                />
+        </RelativeLayout>
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_add_circle_outline_green"
-            style="@style/Widget.MaterialComponents.Chip.Action"
-            android:layout_alignParentEnd="true"
-            />
+            android:layout_below="@id/container_details_details"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp">
+            <ImageView
+                android:id="@+id/remove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_remove_circle_outline_red"
+                android:layout_alignParentStart="true"
+                />
+            <ImageView
+                android:id="@+id/add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_add_circle_outline_green"
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_alignParentEnd="true"
+                />
+        </RelativeLayout>
     </RelativeLayout>
-</RelativeLayout>
+    <View
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:id="@+id/fake_hr"
+        android:background="@color/colorHrDark"/>
+</LinearLayout>

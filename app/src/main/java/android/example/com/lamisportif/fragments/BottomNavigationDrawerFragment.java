@@ -3,6 +3,8 @@ package android.example.com.lamisportif.fragments;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.example.com.lamisportif.R;
+import android.example.com.lamisportif.helpful.OrderLineAdapter;
+import android.example.com.lamisportif.models.Order;
 import android.example.com.lamisportif.models.OrderLine;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +12,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +22,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firestore.v1.StructuredQuery;
 import com.google.gson.Gson;
 import com.google.rpc.Help;
 
@@ -25,12 +32,22 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment {
+public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment implements View.OnClickListener {
 
     LinkedList<OrderLine> mOrderLine = new LinkedList<>();
     private static final String SHARED_FILE = "LAmiSportif.cart";
     private static final String TAG = "Cart Fragment";
+    private static final String LABEL_COLLECTION_USERS = "users";
+    private static final String LABEL_EMAIL = "email";
+    private static final String LABEL_NAME = "name";
+    private static final String LABEL_PHONE = "phone_number";
 
+    private Order mOrder = new Order();
+    private RecyclerView myRecycler;
+    private LinearLayoutManager linearLayoutManager;
+    private OrderLineAdapter orderLineAdapter;
+
+    ImageView confirmBtn;
 
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
         @Override
@@ -98,8 +115,22 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment {
             }
         });
 
+        //Views
+        confirmBtn = inflatedView.findViewById(R.id.confirm_fields);
+        confirmBtn.setOnClickListener(this);
+
+        // Recycler view & adapter
+        myRecycler = inflatedView.findViewById(R.id.meals_list);
+        myRecycler.setHasFixedSize(true);
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        myRecycler.setLayoutManager(linearLayoutManager);
+        orderLineAdapter = new OrderLineAdapter(mOrderLine,getActivity());
+        myRecycler.setAdapter(orderLineAdapter);
+
+        // Data
         getOrderLines();
         Log.d(TAG, "heeere " +mOrderLine);
+
     }
     public void getOrderLines(){
         SharedPreferences sp = getContext().getSharedPreferences(SHARED_FILE,getContext().MODE_PRIVATE);
@@ -108,6 +139,13 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment {
         Gson gson = new Gson();
         for(String key : myOrderLines){
             mOrderLine.add(gson.fromJson(key,OrderLine.class));
+            orderLineAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        //todo Confirmation btn
     }
 }

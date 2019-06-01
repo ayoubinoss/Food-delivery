@@ -50,4 +50,11 @@
     <string name="add_address">add address</string>
     <string name="dropped_pin">dropped</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="confirm_title">Voulez-vous changer de restaurant ?</string>
+    <string name="confirm_content">Si vous ajoutez ce repas, vous allez perdre tous les produits dans votre panier, êtes-vous certain(e) ?</string>
+    <string name="confirm_exit">Oui, confirmer</string>
+    <string name="reject_exit">Non, Mainternir</string>
+
 </resources>
