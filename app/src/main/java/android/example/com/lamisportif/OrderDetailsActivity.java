@@ -1,11 +1,13 @@
 package android.example.com.lamisportif;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.example.com.lamisportif.helpful.GlideApp;
 import android.example.com.lamisportif.helpful.OrderAdapter;
 import android.example.com.lamisportif.helpful.OrderLineOrderAdapter;
 import android.example.com.lamisportif.models.Order;
 import android.example.com.lamisportif.models.OrderLine;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -57,6 +59,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private TextView mMealTotal;
     private TextView mDeliveryPrice;
 
+    private ImageView mCallIcon;
+
     private final String TAG = "OrderDetailsActivity";
 
     String id_order; // get this field from extras and use it to get the details todo
@@ -89,6 +93,14 @@ public class OrderDetailsActivity extends AppCompatActivity {
         mTotal = findViewById(R.id.total);
         mDeliveryPrice = findViewById(R.id.total_delivery);
         mMealTotal = findViewById(R.id.total_meals);
+        mCallIcon = findViewById(R.id.call_icon);
+        mCallIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",
+                        mDeliveryManPhone.getText().toString(), null)));
+            }
+        });
 
 
         mStateProgressBar.setStateDescriptionData(descriptionData);

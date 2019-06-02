@@ -96,10 +96,7 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
                 mNextButton.setEnabled(true);
             }
         });
-        getAllLocations();
-        for(Location location : myLocations) {
-            createRadioButtons(location);
-        }
+
     }
 
     /**
@@ -181,12 +178,16 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
         super.onResume();
         getAllLocations();
         updateRadioButtons();
-        mNextButton.setEnabled(false);
+        //mNextButton.setEnabled(false);
         Log.d(TAG, "locations = " + myLocations.toString());
     }
 
     private void updateRadioButtons() {
-
+        mRadioGroup.removeAllViews();
+        getAllLocations();
+        for(Location location : myLocations) {
+            createRadioButtons(location);
+        }
     }
 
     public boolean isFormValid() {
