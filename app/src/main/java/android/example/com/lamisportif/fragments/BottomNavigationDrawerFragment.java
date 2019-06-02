@@ -167,7 +167,6 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment im
 
         // Data
         getOrderLines();
-        getLocation();
         getCurrentUser();
         getRestaurant();
         getOrder();
@@ -178,10 +177,7 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment im
         totalView.setText(new DecimalFormat("#0.00").format(mOrder.getTotal()).concat(" MAD"));
         totalMealsView.setText(new DecimalFormat("#0.00").format(mOrder.getPrice_products()).concat(" MAD"));
         deliveryPriceView.setText(new DecimalFormat("#0.00").format(mOrder.getPrice_delivery()).concat(" MAD"));
-        if(location != null){
-            addressView.setText(location.getAddress());
-            checkOut.setEnabled(true);
-        }
+
         if(mOrderLine.isEmpty()){
             detailsLayout.setVisibility(View.GONE);
         }
@@ -313,6 +309,16 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment im
                 AdressFragment adressFragment = AdressFragment.newInstance("Choisissez une adresse");
                 adressFragment.show(getActivity().getSupportFragmentManager(),TAG);
                 break;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getLocation();
+        if(location != null){
+            addressView.setText(location.getAddress());
+            checkOut.setEnabled(true);
         }
     }
 }
