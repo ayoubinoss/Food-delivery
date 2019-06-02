@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.example.com.lamisportif.R;
 import android.example.com.lamisportif.RestaurantActivity;
+import android.example.com.lamisportif.models.Order;
 import android.example.com.lamisportif.models.OrderLine;
 import android.example.com.lamisportif.models.Restaurant;
 import android.graphics.Bitmap;
@@ -34,13 +35,19 @@ import java.util.TreeSet;
 
 public class OrderLineAdapter extends RecyclerView.Adapter<OrderLineAdapter.MyViewHolder> {
     private LinkedList<OrderLine> myOrderlines;
+    Order order;
+    TextView totalMeals;
+    TextView total;
     private static final String TAG = "OrderLine Adapter";
     private static final String SHARED_FILE = "LAmiSportif.cart";
 
     Context context;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public OrderLineAdapter(LinkedList<OrderLine> myOrderlines, Context context) {
+    public OrderLineAdapter(LinkedList<OrderLine> myOrderlines,Order order, Context context, TextView totalMeals, TextView total) {
+        this.total = total;
+        this.totalMeals = totalMeals;
+        this.order = order;
         this.myOrderlines = myOrderlines;
         this.context = context;
     }
@@ -75,7 +82,7 @@ public class OrderLineAdapter extends RecyclerView.Adapter<OrderLineAdapter.MyVi
         Log.d(TAG,"details" + buff);
         holder.details.setText(buff);
 
-        String orderID = myOrderlines.get(position).getDesignation().concat(buff);
+        final String orderID = myOrderlines.get(position).getDesignation().concat(buff);
         //OnClickListener
         holder.iconAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +90,10 @@ public class OrderLineAdapter extends RecyclerView.Adapter<OrderLineAdapter.MyVi
                 if(myOrderlines.get(position).getQuantity() < 10){
                     myOrderlines.get(position).setQuantity(myOrderlines.get(position).getQuantity()+1);
                     myOrderlines.get(position).setTotal(myOrderlines.get(position).getPrice() * myOrderlines.get(position).getQuantity());
+                    order.setPrice_products(order.getPrice_products() + myOrderlines.get(position).getPrice());
+                    order.setTotal(order.getTotal() + myOrderlines.get(position).getPrice());
+                    total.setText(new DecimalFormat("#0.00").format(order.getTotal()).concat(" MAD"));
+                    totalMeals.setText(new DecimalFormat("#0.00").format(order.getPrice_products()).concat(" MAD"));
                     notifyDataSetChanged();
                     SharedPreferences sp = context.getSharedPreferences(SHARED_FILE,context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();
@@ -104,6 +115,10 @@ public class OrderLineAdapter extends RecyclerView.Adapter<OrderLineAdapter.MyVi
                 if(myOrderlines.get(position).getQuantity() > 1){
                     myOrderlines.get(position).setQuantity(myOrderlines.get(position).getQuantity()-1);
                     myOrderlines.get(position).setTotal(myOrderlines.get(position).getPrice() * myOrderlines.get(position).getQuantity());
+                    order.setPrice_products(order.getPrice_products() - myOrderlines.get(position).getPrice());
+                    order.setTotal(order.getTotal() - myOrderlines.get(position).getPrice());
+                    total.setText(new DecimalFormat("#0.00").format(order.getTotal()).concat(" MAD"));
+                    totalMeals.setText(new DecimalFormat("#0.00").format(order.getPrice_products()).concat(" MAD"));
                     notifyDataSetChanged();
                     SharedPreferences sp = context.getSharedPreferences(SHARED_FILE,context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();

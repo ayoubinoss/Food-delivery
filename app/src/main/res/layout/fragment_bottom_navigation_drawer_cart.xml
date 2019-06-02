@@ -70,17 +70,172 @@
         android:layout_marginBottom="16dp"
         xmlns:tools="http://schemas.android.com/tools">
         <android.support.v4.widget.NestedScrollView
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
             xmlns:android="http://schemas.android.com/apk/res/android"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             >
-            <android.support.v7.widget.RecyclerView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/meals_list"
-                tools:listitem="@layout/plat_item_in_cart">
-            </android.support.v7.widget.RecyclerView>
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/meals_list"
+                    tools:listitem="@layout/plat_item_in_cart">
+                </android.support.v7.widget.RecyclerView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    android:id="@+id/extra_details_label">
+
+                    <TextView
+                        android:id="@+id/label_facture"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/card_content_order"
+                        android:text="Facture"
+                        android:layout_margin="16dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorTitleAppBar"
+                        />
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_total"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="16dp"
+                        >
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp">
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp">
+                                <TextView
+                                    android:text="@string/total_sans"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.9"/>
+                                <TextView
+                                    android:id="@+id/total_meals"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="600 MAD"
+                                    android:textAlignment="textEnd"
+                                    android:layout_weight="0.1"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp">
+                                <TextView
+                                    android:text="@string/delviery_price"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.9"/>
+                                <TextView
+                                    android:id="@+id/total_delivery"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="600 MAD"
+                                    android:textAlignment="textEnd"
+                                    android:layout_weight="0.1"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp">
+                                <TextView
+                                    android:text="@string/total_avec"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textStyle="bold"
+                                    android:layout_weight="0.9"/>
+                                <TextView
+                                    android:id="@+id/total"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="610 MAD"
+                                    android:textStyle="bold"
+                                    android:textAlignment="textEnd"
+                                    android:layout_weight="0.1"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+                    <TextView
+                        android:id="@+id/label_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/address_details"
+                        android:layout_margin="16dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorTitleAppBar"
+                        />
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="16dp"
+                        >
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp">
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp">
+                                <TextView
+                                    android:id="@+id/address"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/address_client"
+                                    android:textAlignment="textStart"
+                                    android:textSize="16sp"
+                                    android:layout_weight="0.1"/>
+                                <ImageView
+                                    android:id="@+id/edit_location"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_edit_location_black_24dp"/>
+                            </LinearLayout>
+                            <android.support.design.chip.Chip
+                                android:id="@+id/check-out"
+                                style="@style/Widget.MaterialComponents.Chip.Action"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="0dp"
+                                android:padding="0dp"
+                                android:text="@string/commander"
+                                android:textAllCaps="true"
+                                android:enabled="false"
+                                android:layout_gravity="end"
+                                app:chipBackgroundColor="@color/floating_button_color"
+                                android:textColor="@color/colorSoftBlack"
+                                />
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+                </LinearLayout>
+
+            </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/confirm_fields"
@@ -90,8 +245,10 @@
             app:backgroundTint="@color/floating_button_color"
             app:fabSize="normal"
             android:layout_gravity="bottom|center_horizontal"
-
+            android:visibility="gone"
             />
+
     </android.support.design.widget.CoordinatorLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

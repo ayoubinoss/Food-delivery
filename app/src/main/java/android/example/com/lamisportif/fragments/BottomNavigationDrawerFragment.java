@@ -14,6 +14,7 @@ import android.example.com.lamisportif.models.User;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.chip.Chip;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
@@ -26,6 +27,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,6 +40,7 @@ import com.google.firestore.v1.StructuredQuery;
 import com.google.gson.Gson;
 import com.google.rpc.Help;
 
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeSet;
@@ -54,6 +58,7 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment im
 
 
     private ItemTouchHelper mhelper;
+    private Location location;
     private User mUser = new User();
     private Restaurant mResaurant = new Restaurant();
     private Order mOrder = new Order();
@@ -62,6 +67,14 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment im
     private OrderLineAdapter orderLineAdapter;
 
     ImageView confirmBtn;
+    LinearLayout detailsLayout;
+    TextView totalMealsView;
+    TextView totalView;
+    TextView deliveryPriceView;
+    TextView addressView;
+    Chip checkOut;
+    ImageView editLocation;
+
 
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
         @Override
@@ -131,6 +144,15 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment im
 
         //Views
         confirmBtn = inflatedView.findViewById(R.id.confirm_fields);
+        detailsLayout = inflatedView.findViewById(R.id.extra_details_label);
+        totalMealsView = inflatedView.findViewById(R.id.total_meals);
+        deliveryPriceView = inflatedView.findViewById(R.id.total_delivery);
+        totalView = inflatedView.findViewById(R.id.total);
+        addressView = inflatedView.findViewById(R.id.address);
+        checkOut = inflatedView.findViewById(R.id.check_out);
+        editLocation = inflatedView.findViewById(R.id.edit_location);
+        editLocation.setOnClickListener(this);
+        checkOut.setOnClickListener(this);
         confirmBtn.setOnClickListener(this);
 
         // Recycler view & adapter
@@ -138,14 +160,31 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment im
         myRecycler.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext());
         myRecycler.setLayoutManager(linearLayoutManager);
-        orderLineAdapter = new OrderLineAdapter(mOrderLine,getActivity());
+        orderLineAdapter = new OrderLineAdapter(mOrderLine,mOrder,getActivity(),totalMealsView,totalView);
         myRecycler.setAdapter(orderLineAdapter);
+
+
 
         // Data
         getOrderLines();
+        getLocation();
+        getCurrentUser();
+        getRestaurant();
+        getOrder();
+        Log.d(TAG,"order :" + mOrder.toString());
+        Log.d(TAG, "orderLines : " +mOrderLine);
 
-
-        Log.d(TAG, "heeere " +mOrderLine);
+        //View's data
+        totalView.setText(new DecimalFormat("#0.00").format(mOrder.getTotal()).concat(" MAD"));
+        totalMealsView.setText(new DecimalFormat("#0.00").format(mOrder.getPrice_products()).concat(" MAD"));
+        deliveryPriceView.setText(new DecimalFormat("#0.00").format(mOrder.getPrice_delivery()).concat(" MAD"));
+        if(location != null){
+            addressView.setText(location.getAddress());
+            checkOut.setEnabled(true);
+        }
+        if(mOrderLine.isEmpty()){
+            detailsLayout.setVisibility(View.GONE);
+        }
 
 
         // Swipe Stuff
@@ -167,6 +206,9 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment im
                 //call a function to suppress the element from the sharedPreferences
 
                 mOrderLine.remove(viewHolder.getAdapterPosition());
+                getOrder();
+                totalView.setText(new DecimalFormat("#0.00").format(mOrder.getTotal()).concat(" MAD"));
+                totalMealsView.setText(new DecimalFormat("#0.00").format(mOrder.getPrice_products()).concat(" MAD"));
                 SharedPreferences sp = getContext().getSharedPreferences(SHARED_FILE,getContext().MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 Set<String> newOrderLines = new TreeSet<>();
@@ -177,6 +219,7 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment im
                 }
                 if(mOrderLine.isEmpty()){
                     editor.clear();
+                    detailsLayout.setVisibility(View.GONE);
                 }
                 else{
                     editor.putStringSet("orderlines",newOrderLines);
@@ -188,8 +231,7 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment im
         });
         mhelper.attachToRecyclerView(myRecycler);
 
-        //some More Data
-        getCurrentUser();
+
 
     }
     public void getOrderLines(){
@@ -219,8 +261,6 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment im
                                     (String)task.getResult().get(LABEL_PHONE)
                             );
                             Log.d(TAG,"user here " +mUser.toString() );
-                            getRestaurant();
-                            getOrder();
                         }
                     }
                 });
@@ -228,7 +268,7 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment im
     public void getRestaurant(){
         SharedPreferences sp = getContext().getSharedPreferences(SHARED_FILE,getContext().MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        String buff = "";
+        String buff = null;
         mResaurant.setImage(sp.getString("restaurantImageLink",buff));
         mResaurant.setName(sp.getString("restaurantName",buff));
         if(sp.getString("deliveryPrice",buff)!= null){
@@ -249,29 +289,29 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment im
         }
         mOrder.setPrice_products(total);
         mOrder.setTotal(total + mResaurant.getDeliveryPrice());
+        mOrder.setLocation(location);
         Log.d(TAG,"Order :" + mOrder.toString());
     }
     public void insertOrder(){
 
     }
+    public void getLocation(){
+        SharedPreferences sp = getActivity().getSharedPreferences(SHARED_FILE,Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String buff = null ;
+        location = gson.fromJson(sp.getString("chosenLocation",buff),Location.class);
+    }
     @Override
     public void onClick(View v) {
-
         switch(v.getId()){
             case R.id.confirm_fields :
-                SharedPreferences sp = getActivity().getSharedPreferences(SHARED_FILE,Context.MODE_PRIVATE);
-                Gson gson = new Gson();
-                String buff = null ;
-                buff = sp.getString("chosenLocation",buff);
-                Log.d(TAG,"buff !" + buff);
-                Location location = gson.fromJson(sp.getString("chosenLocation",buff),Location.class);
-                if(location == null ){
-                    AdressFragment adressFragment = AdressFragment.newInstance("Choisissez une adresse");
-                    adressFragment.show(getActivity().getSupportFragmentManager(),TAG);
-                }
-                else{
-                    Log.d(TAG,"Locatiiion "+ location.toString());
-                }
+                Log.d(TAG,"clicked" + mOrder);
+                //AdressFragment adressFragment = AdressFragment.newInstance("Choisissez une adresse");
+                    //adressFragment.show(getActivity().getSupportFragmentManager(),TAG);
+                break;
+            case R.id.edit_location:
+                AdressFragment adressFragment = AdressFragment.newInstance("Choisissez une adresse");
+                adressFragment.show(getActivity().getSupportFragmentManager(),TAG);
                 break;
         }
     }

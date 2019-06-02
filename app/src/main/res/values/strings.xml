@@ -56,5 +56,11 @@
     <string name="confirm_content">Si vous ajoutez ce repas, vous allez perdre tous les produits dans votre panier, êtes-vous certain(e) ?</string>
     <string name="confirm_exit">Oui, confirmer</string>
     <string name="reject_exit">Non, Mainternir</string>
+    <string name="total_sans">Total des repas</string>
+    <string name="delviery_price">Prix de livraison</string>
+    <string name="total_avec">Total</string>
+    <string name="address_details">Adresse</string>
+    <string name="address_client">Veuillez ajouter une adresse ! </string>
+    <string name="commander">Commander</string>
 
 </resources>

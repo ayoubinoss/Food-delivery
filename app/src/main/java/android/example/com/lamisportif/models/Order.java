@@ -15,6 +15,7 @@ public class Order {
     private double total;
     private String content;
     private String restaurantName;
+    private Location location;
 
 
     public static final String PENDING = "pending";
@@ -156,6 +157,14 @@ public class Order {
         this.restaurantName = restaurantName;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -172,6 +181,7 @@ public class Order {
                 ", total=" + total +
                 ", content='" + content + '\'' +
                 ", restaurantName='" + restaurantName + '\'' +
+                ", location=" + location +
                 '}';
     }
 }
