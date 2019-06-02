@@ -42,6 +42,8 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
     private Button mAddButton;
     private Button mNextButton;
 
+    BottomNavigationDrawerFragment bottomNavigationDrawerFragment;
+
     private RadioGroup mRadioGroup;
     private static final String TAG = "AdressFragment";
     private static final String SHARED_FILE = "locations";
@@ -54,12 +56,16 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
 
     private int idRadioButton = 1000;
 
-    public AdressFragment() {
+    public AdressFragment(BottomNavigationDrawerFragment bottomNavigationDrawerFragment) {
+        this.bottomNavigationDrawerFragment = bottomNavigationDrawerFragment;
 
     }
 
-    public static AdressFragment newInstance(String title) {
-        AdressFragment frag = new AdressFragment();
+    public AdressFragment(){
+
+    }
+    public static AdressFragment newInstance(String title, BottomNavigationDrawerFragment bottomNavigationDrawerFragment) {
+        AdressFragment frag = new AdressFragment(bottomNavigationDrawerFragment);
         Bundle args = new Bundle();
         args.putString("title", title);
         frag.setArguments(args);
@@ -166,6 +172,9 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
                     editor.apply();
                     Log.d(TAG,"json 2 " + sp.getString("chosenLocation","")); // Check the log here
                     editor.apply();
+                    BottomNavigationDrawerFragment f = new BottomNavigationDrawerFragment();
+                    f.show(getActivity().getSupportFragmentManager(),"TAG");
+                    bottomNavigationDrawerFragment.dismiss();
                     dismiss();
                    // startActivity(new Intent(getContext(), OrderDetailsActivity.class));
                 } else {

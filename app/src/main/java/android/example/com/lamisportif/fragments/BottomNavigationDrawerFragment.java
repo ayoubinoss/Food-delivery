@@ -306,15 +306,15 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment im
                     //adressFragment.show(getActivity().getSupportFragmentManager(),TAG);
                 break;
             case R.id.edit_location:
-                AdressFragment adressFragment = AdressFragment.newInstance("Choisissez une adresse");
+                AdressFragment adressFragment = AdressFragment.newInstance("Choisissez une adresse",this);
                 adressFragment.show(getActivity().getSupportFragmentManager(),TAG);
                 break;
         }
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         getLocation();
         if(location != null){
             addressView.setText(location.getAddress());
