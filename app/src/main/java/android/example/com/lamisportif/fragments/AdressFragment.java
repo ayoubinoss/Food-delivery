@@ -96,10 +96,7 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
                 mNextButton.setEnabled(true);
             }
         });
-        getAllLocations();
-        for(Location location : myLocations) {
-            createRadioButtons(location);
-        }
+
     }
 
     /**
@@ -160,7 +157,7 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
                     mNextButton.setEnabled(true);
                     Log.d(TAG, "location is here here = " + mapButtons.get(getAnswerId()).getAddress());
                     //todo pass the data to the next activity/fragment
-                    startActivity(new Intent(getContext(), OrderDetailsActivity.class));
+                        startActivity(new Intent(getContext(), OrderDetailsActivity.class));
                 } else {
                     Toast.makeText(getContext()," you should select an address",Toast.LENGTH_SHORT).show();
                 }
@@ -171,14 +168,17 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
     @Override
     public void onResume() {
         super.onResume();
-        getAllLocations();
         updateRadioButtons();
-        mNextButton.setEnabled(false);
+        //mNextButton.setEnabled(false);
         Log.d(TAG, "locations = " + myLocations.toString());
     }
 
     private void updateRadioButtons() {
-
+        mRadioGroup.removeAllViews();
+        getAllLocations();
+        for(Location location : myLocations) {
+            createRadioButtons(location);
+        }
     }
 
     public boolean isFormValid() {
