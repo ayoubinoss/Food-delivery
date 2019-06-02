@@ -1,6 +1,7 @@
 package android.example.com.lamisportif.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.example.com.lamisportif.MapsActivity;
@@ -156,12 +157,13 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
                     //todo store the value of Location value to a shared preferences
                     mNextButton.setEnabled(true);
                     Log.d(TAG, "location is here here = " + mapButtons.get(getAnswerId()).toString());
-                    SharedPreferences sp = getActivity().getSharedPreferences(SHARED_FILE, Context.MODE_PRIVATE);
+                    SharedPreferences sp = getActivity().getSharedPreferences("LAmiSportif.cart", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();
                     Gson gson = new Gson();
                     String json = gson.toJson(mapButtons.get(getAnswerId()));
                     Log.d(TAG,"json : " + json);
                     editor.putString("chosenLocation",json);
+                    editor.apply();
                     Log.d(TAG,"json 2 " + sp.getString("chosenLocation","")); // Check the log here
                     editor.apply();
                     dismiss();
@@ -176,6 +178,7 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
     @Override
     public void onResume() {
         super.onResume();
+        mNextButton.setEnabled(false);
         getAllLocations();
         updateRadioButtons();
         //mNextButton.setEnabled(false);
@@ -201,5 +204,10 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
             }
         }
         return 0;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
     }
 }

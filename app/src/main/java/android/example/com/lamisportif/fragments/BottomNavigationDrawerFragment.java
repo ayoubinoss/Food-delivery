@@ -1,6 +1,7 @@
 package android.example.com.lamisportif.fragments;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.example.com.lamisportif.R;
 import android.example.com.lamisportif.helpful.AddressAdapter;
@@ -258,8 +259,7 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment im
 
         switch(v.getId()){
             case R.id.confirm_fields :
-                SharedPreferences sp = getContext().getSharedPreferences(SHARED_FILE,getContext().MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();
+                SharedPreferences sp = getActivity().getSharedPreferences(SHARED_FILE,Context.MODE_PRIVATE);
                 Gson gson = new Gson();
                 String buff = null ;
                 buff = sp.getString("chosenLocation",buff);
