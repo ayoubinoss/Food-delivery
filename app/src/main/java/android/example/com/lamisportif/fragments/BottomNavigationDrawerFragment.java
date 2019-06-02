@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.example.com.lamisportif.R;
 import android.example.com.lamisportif.helpful.AddressAdapter;
 import android.example.com.lamisportif.helpful.OrderLineAdapter;
+import android.example.com.lamisportif.models.Location;
 import android.example.com.lamisportif.models.Order;
 import android.example.com.lamisportif.models.OrderLine;
 import android.example.com.lamisportif.models.Restaurant;
@@ -257,8 +258,20 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment im
 
         switch(v.getId()){
             case R.id.confirm_fields :
-                AdressFragment adressFragment = AdressFragment.newInstance("Choisissez une adresse");;
-                adressFragment.show(getActivity().getSupportFragmentManager(),TAG);
+                SharedPreferences sp = getContext().getSharedPreferences(SHARED_FILE,getContext().MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                Gson gson = new Gson();
+                String buff = null ;
+                buff = sp.getString("chosenLocation",buff);
+                Log.d(TAG,"buff !" + buff);
+                Location location = gson.fromJson(sp.getString("chosenLocation",buff),Location.class);
+                if(location == null ){
+                    AdressFragment adressFragment = AdressFragment.newInstance("Choisissez une adresse");
+                    adressFragment.show(getActivity().getSupportFragmentManager(),TAG);
+                }
+                else{
+                    Log.d(TAG,"Locatiiion "+ location.toString());
+                }
                 break;
         }
     }

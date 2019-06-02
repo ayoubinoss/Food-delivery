@@ -158,9 +158,17 @@ public class AdressFragment extends DialogFragment implements View.OnClickListen
                 if(isFormValid()) {
                     //todo store the value of Location value to a shared preferences
                     mNextButton.setEnabled(true);
-                    Log.d(TAG, "location is here here = " + mapButtons.get(getAnswerId()).getAddress());
-                    //todo pass the data to the next activity/fragment
-                    startActivity(new Intent(getContext(), OrderDetailsActivity.class));
+                    Log.d(TAG, "location is here here = " + mapButtons.get(getAnswerId()).toString());
+                    SharedPreferences sp = getActivity().getSharedPreferences(SHARED_FILE, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(mapButtons.get(getAnswerId()));
+                    Log.d(TAG,"json : " + json);
+                    editor.putString("chosenLocation",json);
+                    Log.d(TAG,"json 2 " + sp.getString("chosenLocation","")); // Check the log here
+                    editor.apply();
+                    dismiss();
+                   // startActivity(new Intent(getContext(), OrderDetailsActivity.class));
                 } else {
                     Toast.makeText(getContext()," you should select an address",Toast.LENGTH_SHORT).show();
                 }
