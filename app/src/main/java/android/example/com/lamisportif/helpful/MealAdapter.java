@@ -35,14 +35,18 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MyViewHolder> 
     private static final String TAG = "MealAdapter";
     Context context;
     String restaurantName;
+    String restaurantImageLink;
+    Double deliveryPrice;
     static String oldCategory = " ";
     int quantity = 1;
     private static final String SHARED_FILE = "LAmiSportif.cart";
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MealAdapter(LinkedList<Meal> myMeals, Context context,String restaurantName) {
+    public MealAdapter(LinkedList<Meal> myMeals, Context context,String restaurantName, String restaurantImageLink, Double deliveryPrice) {
         this.restaurantName = restaurantName;
+        this.restaurantImageLink = restaurantImageLink;
+        this.deliveryPrice = deliveryPrice;
         this.myMeals = myMeals;
         this.context = context;
     }
@@ -89,7 +93,11 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MyViewHolder> 
                 Log.d(TAG,"Add to Cart");
                 Intent intent = new Intent(context,FormActivity.class);
                 Bundle bundle =  new Bundle();
+                //data for order
                 bundle.putString("restaurantName",restaurantName);
+                bundle.putString("restaurantImageLink",restaurantImageLink);
+                bundle.putDouble("deliveryPrice",deliveryPrice);
+
                 bundle.putString("restaurantID",myMeals.get(position).getRestaurantID());
                 bundle.putString("categoryID",myMeals.get(position).getCategoryID());
                 bundle.putString("mealID",myMeals.get(position).getMealID());

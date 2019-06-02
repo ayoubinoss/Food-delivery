@@ -14,6 +14,7 @@ public class Order {
     private double price_products;
     private double total;
     private String content;
+    private String restaurantName;
 
 
     public static final String PENDING = "pending";
@@ -145,5 +146,32 @@ public class Order {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "clientID='" + clientID + '\'' +
+                ", orderID='" + orderID + '\'' +
+                ", restaurantID='" + restaurantID + '\'' +
+                ", date='" + date + '\'' +
+                ", address='" + address + '\'' +
+                ", nbProducts=" + nbProducts +
+                ", status='" + status + '\'' +
+                ", logoRestaurant='" + logoRestaurant + '\'' +
+                ", price_delivery=" + price_delivery +
+                ", price_products=" + price_products +
+                ", total=" + total +
+                ", content='" + content + '\'' +
+                ", restaurantName='" + restaurantName + '\'' +
+                '}';
     }
 }

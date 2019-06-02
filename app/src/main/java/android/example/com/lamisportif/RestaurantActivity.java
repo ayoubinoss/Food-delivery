@@ -102,7 +102,7 @@ public class RestaurantActivity extends AppCompatActivity implements View.OnClic
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        mealAdapter = new MealAdapter(myMeals,this,restaurant.getName());
+        mealAdapter = new MealAdapter(myMeals,this,restaurant.getName(),restaurant.getImage(),restaurant.getDeliveryPrice());
         recyclerView.setAdapter(mealAdapter);
 
         // fill the list

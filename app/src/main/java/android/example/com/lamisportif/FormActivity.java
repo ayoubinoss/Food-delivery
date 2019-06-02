@@ -95,7 +95,9 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
     HashMap <String, LinkedList<String>> fields = new HashMap<>();
     LinkedList<String> keys = new LinkedList<>();
 
-    String mRestaurant = " ";
+    String mRestaurantName = " ";
+    String mRestaurantImageLink = " ";
+    Double mDeliveryPrice;
 
     Meal meal = new Meal();
     OrderLine orderLine = new OrderLine();
@@ -132,11 +134,13 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
 
         // Intent & Bundle
         Bundle bundle = getIntent().getBundleExtra("bundle");
-        mRestaurant = bundle.getString("restaurantName");
+        mRestaurantName = bundle.getString("restaurantName");
+        mRestaurantImageLink = bundle.getString("restaurantImageLink");
+        mDeliveryPrice = bundle.getDouble("deliveryPrice");
         meal.setCategoryID(bundle.getString("categoryID"));
         meal.setMealID(bundle.getString("mealID"));
         meal.setRestaurantID(bundle.getString("restaurantID"));
-        meal.setImage(bundle.getString("imageRestaurant"));
+        meal.setImage(bundle.getString("imageRestaurant")); //todo check this field
         orderLine.setPrice(bundle.getDouble("price"));
         orderLine.setDesignation(bundle.getString("designation"));
         orderLine.setQuantity(1);
@@ -243,7 +247,7 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
                 oldRestaurantName = sp.getString("restaurantName", oldRestaurantName);
 
                 Log.d(TAG,"old :" + oldRestaurantName);
-                if(oldRestaurantName != null && !mRestaurant.equals(oldRestaurantName)){
+                if(oldRestaurantName != null && !mRestaurantName.equals(oldRestaurantName)){
                     ConfirmFragment confirmFragment = new ConfirmFragment();
                     confirmFragment.show(getSupportFragmentManager(),TAG);
                     //
@@ -262,7 +266,9 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
                     Gson gson = new Gson();
                     String json  = gson.toJson(orderLine);
                     newOrderLines.add(json);
-                    editor.putString("restaurantName",mRestaurant);
+                    editor.putString("restaurantName",mRestaurantName);
+                    editor.putString("restaurantImageLink",mRestaurantImageLink);
+                    editor.putString("deliveryPrice",String.valueOf(mDeliveryPrice));
                     editor.putStringSet("orderlines",newOrderLines);
                     editor.apply();
                     Log.d(TAG, " Json format : " + json);
