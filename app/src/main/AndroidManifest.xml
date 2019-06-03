@@ -25,12 +25,6 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:value="@xml/searchable" />
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.SEARCH" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ProfileActivity"
@@ -63,6 +57,12 @@
         <activity
             android:name=".FirstActivity"
             android:theme="@style/FilterActivityTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.SEARCH" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
         <!--

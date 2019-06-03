@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.example.com.lamisportif.OrderDetailsActivity;
 import android.example.com.lamisportif.R;
 import android.example.com.lamisportif.models.Order;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -58,7 +59,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         holder.content.setText(myOrders.get(position).getContent());
         holder.restaurantID.setText(myOrders.get(position).getRestaurantID());
         holder.total.setText(new DecimalFormat("#0.00").
-                                                format(myOrders.get(position).getTotal()));
+                                                format(myOrders.get(position).getTotal()).concat(" MAD"));
 
         /*set image*/
         StorageReference sr = FirebaseStorage.
@@ -70,6 +71,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                 .load(sr)
                 .into(holder.logoRestaurant);
 
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,OrderDetailsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id_order",myOrders.get(position).getOrderID());
+                intent.putExtra("bundle",bundle);
+                context.startActivity(intent);
+            }
+        });
         /*end*/
 
 
@@ -83,7 +94,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
 
         public TextView total;
@@ -103,18 +114,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             content = v.findViewById(R.id.content);
             logoRestaurant = v.findViewById(R.id.logo_restaurant);
             restaurantID = v.findViewById(R.id.label_restaurant);
-            v.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View v) {
-            //handle clicks
-            switch (v.getId()) {
-                case R.id.parent_layout:
-                    context.startActivity(new Intent(context,OrderDetailsActivity.class));
-                    break;
-            }
-        }
 
     }
 }

@@ -2,6 +2,7 @@ package android.example.com.lamisportif;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.example.com.lamisportif.helpful.GlideApp;
 import android.example.com.lamisportif.helpful.OrderAdapter;
 import android.example.com.lamisportif.helpful.OrderLineOrderAdapter;
@@ -12,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -39,9 +42,12 @@ import java.util.Map;
 
 public class OrderDetailsActivity extends AppCompatActivity {
 
+    private static final String SHARED_FILE_1 = "order";
+
     private String[] descriptionData = {"Pending", "Accepted", "Dispatched", "Delivered"};
     private TextView mItemDescription;
     private ImageView mDescriptionImg;
+    String  currentStatus;
 
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
@@ -58,6 +64,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private TextView mTotal;
     private TextView mMealTotal;
     private TextView mDeliveryPrice;
+    private TextView label_delivery_man;
+    private CardView card_delivery_man;
 
     private ImageView mCallIcon;
 
@@ -72,9 +80,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
 
-        myEmail = "larhlimihamza@gmail.com";//todo change it
-        id_order = "8v6Yir6xB8Fw8brJlAyB";//todo change it
-
+        myEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        Bundle bundle = getIntent().getBundleExtra("bundle");
+        id_order = bundle.getString("id_order");
         mMapStatus.put("pending",StateProgressBar.StateNumber.ONE);
         mMapStatus.put("accepted",StateProgressBar.StateNumber.TWO);
         mMapStatus.put("dispatched",StateProgressBar.StateNumber.THREE);
@@ -86,6 +94,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
         mMapStatusInversed.put(4, "delivered");
 
         /*get the views here*/
+        label_delivery_man = findViewById(R.id.label_delivery_man);
+        card_delivery_man = findViewById(R.id.card_delivery_man);
         mDeliveryManImage = findViewById(R.id.img_delivery_man);
         mDeliveryManName = findViewById(R.id.delevery_man_name);
         mDeliveryManPhone = findViewById(R.id.delivery_man_phone_number);
@@ -121,7 +131,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
                     40,
                     14.5));
         }*/
-        getDeliveryManDetails();
+        //getDeliveryManDetails();
         getOrderStatus();
         getOrderDetails();
         //refresh list
@@ -181,11 +191,17 @@ public class OrderDetailsActivity extends AppCompatActivity {
                             if(document.exists()) {
                                 Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                                 mStateProgressBar.setCurrentStateNumber(mMapStatus.get(document.getString("status")));
-                                mDeliveryPrice.setText(String.valueOf(document.getLong("total_delivery")).concat(" MAD"));
+                                currentStatus = document.getString("status");
+                                mDeliveryPrice.setText(document.getString("total_delivery").concat(" MAD"));
                                 mTotal.setText(document.getString("total").concat(" MAD"));
                                 mMealTotal.setText(document.getString("total_meals").concat(" MAD"));
                             } else {
                                 Log.d(TAG, "No such document");
+                            }
+                            if(!currentStatus.equals("pending")){
+                                label_delivery_man.setVisibility(View.VISIBLE);
+                                card_delivery_man.setVisibility(View.VISIBLE);
+                                getDeliveryManDetails();
                             }
                         } else {
                             Log.d(TAG, "get failed with ", task.getException());
@@ -205,6 +221,9 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 if(!mMapStatusInversed.get(mStateProgressBar.getCurrentStateNumber()).equals(snapshot.getString("status"))) {
                     Log.d(TAG, "status changed");
                     mStateProgressBar.setCurrentStateNumber(mMapStatus.get(snapshot.getString("status")));
+                    label_delivery_man.setVisibility(View.VISIBLE);
+                    card_delivery_man.setVisibility(View.VISIBLE);
+                    getDeliveryManDetails();
                 } else {
                     Log.d(TAG,"status was not changed");
                 }

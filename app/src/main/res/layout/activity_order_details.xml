@@ -24,7 +24,7 @@
     <com.kofigyan.stateprogressbar.StateProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:spb_currentStateNumber="two"
+        app:spb_currentStateNumber="one"
         app:spb_maxStateNumber="four"
         app:spb_stateBackgroundColor="#BDBDBD"
         app:spb_stateForegroundColor="@color/colorSecondary"
@@ -48,6 +48,7 @@
         android:layout_below="@id/status"
         android:text="Delivery Man"
         android:layout_margin="16dp"
+        android:visibility="gone"
         android:textStyle="bold"
         android:textColor="@color/colorTitleAppBar"
 
@@ -59,6 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/label_delivery_man"
         android:layout_marginStart="16dp"
+        android:visibility="gone"
         android:layout_marginEnd="16dp">
         <RelativeLayout
             android:id="@+id/item_description_layout"

@@ -94,7 +94,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Geocoder geocoder;//Geocoder class to get city, state, country, postal code, known name.
         List<Address> addresses =null;
         geocoder = new Geocoder(this, Locale.getDefault());
-        LatLng home = new LatLng(33.567815, -7.589085);//default location to show for the user
+        LatLng home = new LatLng(33.984045, -6.867452);//default location to show for the user
 
         try {
             addresses = geocoder.getFromLocation(home.latitude, home.longitude, 1);

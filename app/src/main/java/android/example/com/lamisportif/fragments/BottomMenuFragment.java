@@ -1,6 +1,8 @@
 package android.example.com.lamisportif.fragments;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.example.com.lamisportif.FirstActivity;
 import android.example.com.lamisportif.OrdersActivity;
 import android.example.com.lamisportif.ProfileActivity;
 import android.example.com.lamisportif.R;
@@ -19,6 +21,8 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class BottomMenuFragment extends BottomSheetDialogFragment {
+
+    private static final String SHARED_FILE = "LAmiSportif.cart";
 
     @Nullable
     @Override
@@ -40,8 +44,12 @@ public class BottomMenuFragment extends BottomSheetDialogFragment {
                         startActivity(new Intent(getContext(), ProfileActivity.class));
                         break;
                     case R.id.deconnexion:
+                        SharedPreferences sp = getContext().getSharedPreferences(SHARED_FILE,getContext().MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.clear();
+                        editor.apply();
                         FirebaseAuth.getInstance().signOut();
-                        ((NavigationHost)getActivity()).navigateTo(new LoginFragment(), true);
+                        startActivity(new Intent(getActivity(),FirstActivity.class));
                         Toast.makeText(getActivity(),"deconnexion", Toast.LENGTH_SHORT).show();
                         break;
                 }

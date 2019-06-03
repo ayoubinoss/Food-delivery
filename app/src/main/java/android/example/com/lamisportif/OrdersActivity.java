@@ -15,6 +15,7 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -39,7 +40,7 @@ public class OrdersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
 
-        myEmail = "larhlimihamza@gmail.com";
+        myEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
         //RecyclerView & NestedScroll
         recyclerView = findViewById(R.id.order_list);
@@ -71,13 +72,16 @@ public class OrdersActivity extends AppCompatActivity {
                          public Order(String restaurantID, String status, String logoRestaurant,
                  double total, String content) {
                         * */
-                        orders.add(new Order(
+                        Order order = new Order(
                                 document.getString("restaurant_name"),
                                 document.getString("status"),
                                 document.getString("logo_restaurant"),
                                 Double.valueOf(document.getString("total")),
                                 document.getString("content")
-                        ));
+                        );
+                        order.setOrderID(document.getId());
+                        orders.add(order);
+
                     }
                     orderAdapter.notifyDataSetChanged();
                 }
